@@ -49,7 +49,7 @@ public class ExplosionLarge {
             if(result != null){
                 Block hitBlock = result.getHitBlock();
                 Material material = hitBlock.getType();
-                if(material != Material.AIR && material != Material.CAVE_AIR && material != Material.VOID_AIR){
+                if(!material.isAir()){
                     float blastResistance = material.getBlastResistance();
                     if(blastResistance < 100){
                         boolean removeBlock = Utils.randomFloat(0, 1) > blastResistance/100;
@@ -65,7 +65,7 @@ public class ExplosionLarge {
 
         for(int i=0; i<removedBlocks.size(); i++){
             Block temp = removedBlocks.get(i);
-            if(Utils.randomFloat(0, 1) < 0.3){
+            if(Utils.randomFloat(0, 1) < 0.2){
                 Location l = temp.getLocation().add(0, 1, 0);
                 FallingBlock fallingBlock = world.spawnFallingBlock(l, removedBlocksMaterials.get(i).createBlockData());
                 fallingBlock.setVelocity(l.subtract(location).toVector().normalize().setY(Utils.randomFloat(0.1F, 1)).multiply(2));
