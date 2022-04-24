@@ -72,9 +72,13 @@ public class DirectionalParticleCollection {
         }
     }
 
-    public void randomizeLocations(double maxDistance){
+    public void randomizeLocations(double offsetX, double offsetY, double offsetZ){
         for(int i=0; i<particleLocations.size(); i++){
-            particleLocations.set(i, LocationUtils.randomOffsetLocation(particleLocations.get(i), maxDistance, maxDistance, maxDistance));
+            particleLocations.set(i, LocationUtils.randomOffsetLocation(particleLocations.get(i), offsetX, offsetY, offsetZ));
         }
+    }
+
+    public void randomizeLocations(double maxDistance){
+        randomizeLocations(maxDistance, maxDistance, maxDistance);
     }
 }
