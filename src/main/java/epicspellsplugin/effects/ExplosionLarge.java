@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package effects;
+package epicspellsplugin.effects;
 
 import epicspellsplugin.utils.DirectionalParticleCollection;
 import epicspellsplugin.utils.Utils;
@@ -27,25 +27,25 @@ import org.bukkit.util.Vector;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ExplosionMedium {
+public class ExplosionLarge {
 
-    public ExplosionMedium(World world, Location location, boolean spawnFire){
-        int size = 1;
+    public ExplosionLarge(World world, Location location, boolean spawnFire){
+        int size = 2;
         List<DirectionalParticleCollection> particles = new ArrayList<>();
         Vector velocity = new Vector();
-        particles.add(new DirectionalParticleCollection(world, Particle.SMALL_FLAME, location, velocity, 80, 0.5F));
-        particles.add(new DirectionalParticleCollection(world, Particle.SMOKE_LARGE, location, velocity, 30, 0.5F));
-        particles.add(new DirectionalParticleCollection(world, Particle.SMOKE_NORMAL, location, velocity, 40, 0.5F));
-        particles.add(new DirectionalParticleCollection(world, Particle.CAMPFIRE_COSY_SMOKE, location, velocity, 40, 0.2F));
+        particles.add(new DirectionalParticleCollection(world, Particle.SMALL_FLAME, location, velocity, 100, 0.5F));
+        particles.add(new DirectionalParticleCollection(world, Particle.SMOKE_LARGE, location, velocity, 50, 0.5F));
+        particles.add(new DirectionalParticleCollection(world, Particle.SMOKE_NORMAL, location, velocity, 80, 0.5F));
+        particles.add(new DirectionalParticleCollection(world, Particle.CAMPFIRE_COSY_SMOKE, location, velocity, 80, 0.2F));
 
         Block block = location.getBlock();
         Location blocklocation = block.getLocation();
         List<Block> removedBlocks = new ArrayList<>();
         List<Material> removedBlocksMaterials = new ArrayList<>();
-        for(int i=0; i<500; i++) {
+        for(int i=0; i<1000; i++) {
             Vector vel = new Vector(Utils.randomFloat(-1, 1), Utils.randomFloat(-1, 1), Utils.randomFloat(-1, 1)).normalize();
             //System.out.println(vel);
-            RayTraceResult result = world.rayTraceBlocks(blocklocation, vel, 4, FluidCollisionMode.NEVER);
+            RayTraceResult result = world.rayTraceBlocks(blocklocation, vel, 6, FluidCollisionMode.NEVER);
             if(result != null){
                 Block hitBlock = result.getHitBlock();
                 Material material = hitBlock.getType();
@@ -68,7 +68,7 @@ public class ExplosionMedium {
             if(Utils.randomFloat(0, 1) < 0.3){
                 Location l = temp.getLocation().add(0, 1, 0);
                 FallingBlock fallingBlock = world.spawnFallingBlock(l, removedBlocksMaterials.get(i).createBlockData());
-                fallingBlock.setVelocity(l.subtract(location).toVector().normalize().setY(Utils.randomFloat(0.1F, 1)));
+                fallingBlock.setVelocity(l.subtract(location).toVector().normalize().setY(Utils.randomFloat(0.1F, 1)).multiply(2));
             }
         }
 
@@ -78,6 +78,6 @@ public class ExplosionMedium {
             temp.spawn();
         }
 
-        world.playSound(location, Sound.ENTITY_GENERIC_EXPLODE, 7, 0);
+        world.playSound(location, Sound.ENTITY_GENERIC_EXPLODE, 10, 0);
     }
 }
