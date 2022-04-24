@@ -33,10 +33,10 @@ public class ExplosionMedium {
         int size = 1;
         List<DirectionalParticleCollection> particles = new ArrayList<>();
         Vector velocity = new Vector();
-        particles.add(new DirectionalParticleCollection(world, Particle.SMALL_FLAME, location, velocity, 80, 0.5F));
-        particles.add(new DirectionalParticleCollection(world, Particle.SMOKE_LARGE, location, velocity, 30, 0.5F));
-        particles.add(new DirectionalParticleCollection(world, Particle.SMOKE_NORMAL, location, velocity, 40, 0.5F));
-        particles.add(new DirectionalParticleCollection(world, Particle.CAMPFIRE_COSY_SMOKE, location, velocity, 40, 0.2F));
+        particles.add(new DirectionalParticleCollection(world, Particle.SMALL_FLAME, location, velocity, 80, 0.5));
+        particles.add(new DirectionalParticleCollection(world, Particle.SMOKE_LARGE, location, velocity, 30, 0.5));
+        particles.add(new DirectionalParticleCollection(world, Particle.SMOKE_NORMAL, location, velocity, 40, 0.5));
+        particles.add(new DirectionalParticleCollection(world, Particle.CAMPFIRE_COSY_SMOKE, location, velocity, 40, 0.2));
 
         Block block = location.getBlock();
         Location blocklocation = block.getLocation();
