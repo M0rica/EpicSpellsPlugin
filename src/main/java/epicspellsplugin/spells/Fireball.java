@@ -23,13 +23,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import epicspellsplugin.utils.DirectionalParticleCollection;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.Particle;
-import org.bukkit.World;
+import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.bukkit.util.Vector;
 
 /**
  *
@@ -38,10 +36,12 @@ import org.bukkit.entity.Player;
 public class Fireball extends BaseSpell{
     
     private int wallThickness;
+    private Material hitMaterial;
     
     @Override
     public void init(World world, Player player, int id, int parentID, String name){
         super.init(world, player, id, parentID, name);
+        collideWithFluids = true;
         maxDistance = 50;
         maxLifeTime = 300;
         velocity = player.getLocation().getDirection();
@@ -54,9 +54,9 @@ public class Fireball extends BaseSpell{
         super.tick();
         position = position.add(velocity);
         List<DirectionalParticleCollection> particles = new ArrayList<>();
-        particles.add(new DirectionalParticleCollection(world, Particle.SMALL_FLAME, position, velocity, 20, 0.1F));
-        particles.add(new DirectionalParticleCollection(world, Particle.SMOKE_LARGE, position, velocity, 15, 0.1F));
-        particles.add(new DirectionalParticleCollection(world, Particle.SMOKE_NORMAL, position, velocity, 16, 0.1F));
+        particles.add(new DirectionalParticleCollection(world, Particle.SMALL_FLAME, position, velocity, 20, 0.1));
+        particles.add(new DirectionalParticleCollection(world, Particle.SMOKE_LARGE, position, velocity, 15, 0.1));
+        particles.add(new DirectionalParticleCollection(world, Particle.SMOKE_NORMAL, position, velocity, 16, 0.1));
         //world.spawnParticle(Particle.SMALL_FLAME, position, 20, size, size, size, 0.1);
         //world.spawnParticle(Particle.SMOKE_LARGE, position, 15, size, size, size, 0.1);
         //world.spawnParticle(Particle.SMOKE_NORMAL, position, 16, size, size, size, 0.1);
@@ -80,10 +80,12 @@ public class Fireball extends BaseSpell{
     @Override
     public void on_block_hit(Location location, Block block, int wallThickness) {
         this.wallThickness = wallThickness;
-        if(block.getType().equals(Material.BEDROCK)){
+        Material material = block.getType();
+        if(material.equals(Material.BEDROCK)){
             this.wallThickness = 100;
         }
         System.out.println(wallThickness);
+        hitMaterial = material;
         alive = false;
     }
 
@@ -99,21 +101,14 @@ public class Fireball extends BaseSpell{
 
     @Override
     public void terminate(Location location) {
-        /*world.createExplosion(location, 8);
-        List<DirectionalParticleCollection> particles = new ArrayList<>();
-        particles.add(new DirectionalParticleCollection(world, Particle.SMALL_FLAME, location, velocity, 100, (float) 0.5));
-        particles.add(new DirectionalParticleCollection(world, Particle.SMOKE_LARGE, location, velocity, 50, (float) 0.5));
-        particles.add(new DirectionalParticleCollection(world, Particle.SMOKE_NORMAL, location, velocity, 80, (float) 0.5));
-        particles.add(new DirectionalParticleCollection(world, Particle.CAMPFIRE_COSY_SMOKE, location, velocity, 80, (float) 0.2));
-        for(DirectionalParticleCollection temp: particles){
-            if(wallThickness <= 2){
-                temp.randomizeLocationsInDirection();
-            } else {
-                temp.randomizeLocations(size);
-            }
-            temp.adjustVelocities();
-            temp.spawn();*/
-        new ExplosionLarge(world, location, true);
+        if (hitMaterial != null && !hitMaterial.equals(Material.WATER)){
+            new ExplosionLarge(world, location, true);
+        } else {
+            DirectionalParticleCollection temp = new DirectionalParticleCollection(world, Particle.CAMPFIRE_COSY_SMOKE, location, new Vector(0,0.1,0), 20, 0.3);
+            temp.randomizeLocations(2, 0.5, 2);
+            temp.spawn();
+            world.playSound(location, Sound.BLOCK_FIRE_EXTINGUISH, 5, 0);
+        }
     }
 
     @Override
