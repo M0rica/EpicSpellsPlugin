@@ -31,12 +31,12 @@ public class DirectionalParticleCollection {
     private Particle particle;
     private Vector velocity;
     private int amount;
-    private float speed;
+    private double speed;
 
     public List<Location> particleLocations;
     public List<Vector> particleVelocities;
 
-    public DirectionalParticleCollection(World world, Particle particle, Location location, Vector velocity, int amount, float speed){
+    public DirectionalParticleCollection(World world, Particle particle, Location location, Vector velocity, int amount, double speed){
         this.world = world;
         this.location = location;
         this.particle = particle;
