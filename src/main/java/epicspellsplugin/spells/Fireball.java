@@ -16,9 +16,9 @@
  */
 package epicspellsplugin.spells;
 
-import effects.ExplosionLarge;
+import epicspellsplugin.effects.ExplosionLarge;
 import epicspellsplugin.BaseSpell;
-import epicspellsplugin.utils.DirectionalParticle;
+
 import java.util.ArrayList;
 import java.util.List;
 
