@@ -46,11 +46,16 @@ public class RealisticExplosion {
 
         for(int i=0; i<removedBlocks.size(); i++){
             Block temp = removedBlocks.get(i);
-            if(Utils.randomFloat(0, 1) < flyingBlockThreshold){
+            if(Utils.randomFloat(0, 1) < flyingBlockThreshold) {
                 Location l = temp.getLocation().add(0, 1, 0);
                 FallingBlock fallingBlock = world.spawnFallingBlock(l, removedBlocksMaterials.get(i).createBlockData());
-                //System.out.println(l.subtract(location).toVector().normalize().setY(Utils.randomFloat(0.1F, 1)).multiply((double)power/10));
-                fallingBlock.setVelocity(l.subtract(location).toVector().normalize().setY(Utils.randomFloat(0.1F, 1)).multiply((double)power/10));
+                try {
+                    fallingBlock.setVelocity(l.subtract(location).toVector().normalize().setY(Utils.randomFloat(0.1F, 1)).multiply((double) power / 10));
+                } catch (IllegalArgumentException e){
+                    System.out.println("Rerun");
+                    fallingBlock.remove();
+                    i--;
+                }
             }
         }
 
