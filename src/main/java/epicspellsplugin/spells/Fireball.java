@@ -101,13 +101,13 @@ public class Fireball extends BaseSpell{
 
     @Override
     public void terminate(Location location) {
-        if (hitMaterial != null && !hitMaterial.equals(Material.WATER)){
-            new ExplosionLarge(world, location, true);
-        } else {
+        if (hitMaterial != null && hitMaterial.equals(Material.WATER)){
             DirectionalParticleCollection temp = new DirectionalParticleCollection(world, Particle.CAMPFIRE_COSY_SMOKE, location, new Vector(0,0.1,0), 20, 0.3);
             temp.randomizeLocations(2, 0.5, 2);
             temp.spawn();
             world.playSound(location, Sound.BLOCK_FIRE_EXTINGUISH, 5, 0);
+        } else {
+            new ExplosionLarge(world, location, true);
         }
     }
 
