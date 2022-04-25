@@ -60,20 +60,22 @@ public class RealisticExplosion {
         }
 
         for(DirectionalParticleCollection temp: particles){
-            temp.randomizeLocations(power);
+            temp.randomizeLocations(power/2);
             temp.adjustVelocities();
-            temp.setSpeed((double)power/50);
+            temp.setSpeed((double)power/25);
             temp.spawn();
         }
 
-        Collection<Entity> nearbyEntities = world.getNearbyEntities(location, power/2, power/2, power/2);
+        Collection<Entity> nearbyEntities = world.getNearbyEntities(location, power, power, power);
         for(Entity entity: nearbyEntities){
             Vector velocity = entity.getLocation().subtract(location).toVector();
             double distance = velocity.length();
             double distancePower = (double) power/distance < power ? 1: (double) power/distance;
-            entity.setVelocity(velocity.normalize().multiply(distancePower).add(new Vector(0, 1, 0)));
+            if(!(entity instanceof FallingBlock)){
+                entity.setVelocity(velocity.normalize().multiply(distancePower).add(new Vector(0, 1, 0)));
+            }
             if(entity instanceof LivingEntity){
-                ((LivingEntity) entity).damage(distancePower);
+                ((LivingEntity) entity).damage(distancePower*2);
             }
         }
 
