@@ -52,6 +52,10 @@ public class DirectionalParticleCollection {
         }
     }
 
+    public void setSpeed(double speed){
+        this.speed = speed;
+    }
+
     public void spawn(){
         for(int i=0; i<particleLocations.size(); i++){
             //System.out.println("spawn");
@@ -62,7 +66,7 @@ public class DirectionalParticleCollection {
 
     public void adjustVelocities(){
         for(int i=0; i<particleLocations.size(); i++){
-            particleVelocities.set(i, particleLocations.get(i).clone().subtract(location).toVector());
+            particleVelocities.set(i, particleLocations.get(i).clone().subtract(location).toVector().normalize());
         }
     }
 
