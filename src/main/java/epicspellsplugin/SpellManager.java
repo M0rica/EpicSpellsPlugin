@@ -18,6 +18,7 @@ package epicspellsplugin;
 
 import epicspellsplugin.exceptions.NotEnoughManaException;
 import epicspellsplugin.exceptions.SpellCooldownException;
+import epicspellsplugin.spells.Explosion;
 import epicspellsplugin.spells.Fireball;
 import epicspellsplugin.spells.PowerStrike;
 import java.util.ArrayList;
@@ -61,6 +62,8 @@ public class SpellManager {
         SpellWraper wraper = new SpellWraper("Fireball", new Fireball(), 50, 100);
         registerSpell(wraper);
         wraper = new SpellWraper("PowerStrike", new PowerStrike(), 150, 150);
+        registerSpell(wraper);
+        wraper = new SpellWraper("Explosion", new Explosion(), 1, 1);
         registerSpell(wraper);
     }
     
@@ -197,8 +200,8 @@ public class SpellManager {
         while(activeSpells.containsKey(id)){
             id = random.nextInt(9999);
         }
-        spell.init(player.getWorld(), player, id, parentID, name);
         spell.setAlive(true);
+        spell.init(player.getWorld(), player, id, parentID, name);
         activeSpells.put(id, spell);
     }
     
