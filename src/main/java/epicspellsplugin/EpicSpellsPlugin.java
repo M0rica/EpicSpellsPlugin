@@ -81,6 +81,9 @@ public class EpicSpellsPlugin extends JavaPlugin{
     }
     
     public void setup(){
+        for(Player player: Bukkit.getOnlinePlayers()){
+            mageManager.addPlayer(player);
+        }
         scheduler.scheduleSyncRepeatingTask(this, new Runnable() {
             @Override
             public void run() {
