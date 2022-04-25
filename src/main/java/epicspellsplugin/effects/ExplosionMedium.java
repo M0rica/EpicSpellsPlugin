@@ -30,7 +30,6 @@ import java.util.List;
 public class ExplosionMedium {
 
     public ExplosionMedium(World world, Location location, boolean spawnFire){
-        int size = 1;
         List<DirectionalParticleCollection> particles = new ArrayList<>();
         Vector velocity = new Vector();
         particles.add(new DirectionalParticleCollection(world, Particle.SMALL_FLAME, location, velocity, 80, 0.3));
@@ -38,46 +37,6 @@ public class ExplosionMedium {
         particles.add(new DirectionalParticleCollection(world, Particle.SMOKE_NORMAL, location, velocity, 40, 0.3));
         particles.add(new DirectionalParticleCollection(world, Particle.CAMPFIRE_COSY_SMOKE, location, velocity, 40, 0.1));
 
-        Block block = location.getBlock();
-        Location blocklocation = block.getLocation();
-        List<Block> removedBlocks = new ArrayList<>();
-        List<Material> removedBlocksMaterials = new ArrayList<>();
-        for(int i=0; i<500; i++) {
-            Vector vel = new Vector(Utils.randomFloat(-1, 1), Utils.randomFloat(-1, 1), Utils.randomFloat(-1, 1)).normalize();
-            //System.out.println(vel);
-            RayTraceResult result = world.rayTraceBlocks(blocklocation, vel, 4, FluidCollisionMode.NEVER);
-            if(result != null){
-                Block hitBlock = result.getHitBlock();
-                Material material = hitBlock.getType();
-                if(!material.isAir()){
-                    float blastResistance = material.getBlastResistance();
-                    if(blastResistance < 100){
-                        boolean removeBlock = Utils.randomFloat(0, 1) > blastResistance/100;
-                        if(removeBlock){
-                            hitBlock.setType(Material.AIR);
-                            removedBlocks.add(hitBlock);
-                            removedBlocksMaterials.add(material);
-                        }
-                    }
-                }
-            }
-        }
-
-        for(int i=0; i<removedBlocks.size(); i++){
-            Block temp = removedBlocks.get(i);
-            if(Utils.randomFloat(0, 1) < 0.2){
-                Location l = temp.getLocation().add(0, 1, 0);
-                FallingBlock fallingBlock = world.spawnFallingBlock(l, removedBlocksMaterials.get(i).createBlockData());
-                fallingBlock.setVelocity(l.subtract(location).toVector().normalize().setY(Utils.randomFloat(0.1F, 1)));
-            }
-        }
-
-        for(DirectionalParticleCollection temp: particles){
-            temp.randomizeLocations(size);
-            temp.adjustVelocities();
-            temp.spawn();
-        }
-
-        world.playSound(location, Sound.ENTITY_GENERIC_EXPLODE, 7, 0);
+        new RealisticExplosion(world, location, 5, particles, 0.2, spawnFire);
     }
 }
