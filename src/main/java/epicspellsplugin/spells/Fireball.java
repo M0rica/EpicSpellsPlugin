@@ -22,6 +22,7 @@ import epicspellsplugin.BaseSpell;
 import java.util.ArrayList;
 import java.util.List;
 
+import epicspellsplugin.effects.ExplosionMedium;
 import epicspellsplugin.utils.DirectionalParticleCollection;
 import org.bukkit.*;
 import org.bukkit.block.Block;
@@ -107,7 +108,7 @@ public class Fireball extends BaseSpell{
             temp.spawn();
             world.playSound(location, Sound.BLOCK_FIRE_EXTINGUISH, 5, 0);
         } else {
-            new ExplosionLarge(world, location, true);
+            new ExplosionMedium(world, location, true);
         }
     }
 
