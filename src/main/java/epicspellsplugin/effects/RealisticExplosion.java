@@ -30,12 +30,9 @@ public class RealisticExplosion {
             x *= ratio*power;
             y *= ratio*power;
             z *= ratio*power;
-            //x *= power;
-            //y *= power;
-            //z *= power;
             Vector vel = new Vector(x, y, z);
             double length = vel.length();
-            RayTraceResult result = world.rayTraceBlocks(blocklocation, vel, length, FluidCollisionMode.NEVER);
+            RayTraceResult result = world.rayTraceBlocks(blocklocation, vel, length, FluidCollisionMode.ALWAYS);
             if(result != null){
                 Block hitBlock = result.getHitBlock();
                 Material material = hitBlock.getType();
@@ -52,18 +49,35 @@ public class RealisticExplosion {
                 }
             }
         }
+        if(spawnFire) {
+            for (int i = 0; i < rays / 10; i++) {
+                Random r = new Random();
+                double x = r.nextGaussian();
+                double y = r.nextGaussian();
+                double z = r.nextGaussian();
+                Vector vel = new Vector(x, y, z).normalize();
+                RayTraceResult result = world.rayTraceBlocks(blocklocation, vel, power, FluidCollisionMode.NEVER);
+                if (result != null) {
+                    System.out.println(result.getHitPosition());
+                    result.getHitPosition().toLocation(world).getBlock().setType(Material.FIRE);
+                }
+            }
+        }
 
         for(int i=0; i<removedBlocks.size(); i++){
             Block temp = removedBlocks.get(i);
             if(Utils.randomFloat(0, 1) < flyingBlockThreshold) {
                 Location l = temp.getLocation().add(0, 1, 0);
-                FallingBlock fallingBlock = world.spawnFallingBlock(l, removedBlocksMaterials.get(i).createBlockData());
-                try {
-                    fallingBlock.setVelocity(l.subtract(location).toVector().normalize().setY(Utils.randomFloat(0.1F, 1)).multiply((double) power / 10));
-                } catch (IllegalArgumentException e){
-                    System.out.println("Rerun");
-                    fallingBlock.remove();
-                    i--;
+                Material material = removedBlocksMaterials.get(i);
+                if(!material.equals(Material.WATER) && !material.equals(Material.LAVA)) {
+                    FallingBlock fallingBlock = world.spawnFallingBlock(l, material.createBlockData());
+                    try {
+                        fallingBlock.setVelocity(l.subtract(location).toVector().normalize().setY(Utils.randomFloat(0.1F, 1)).multiply((double) power / 10));
+                    } catch (IllegalArgumentException e) {
+                        System.out.println("Rerun");
+                        fallingBlock.remove();
+                        i--;
+                    }
                 }
             }
         }
