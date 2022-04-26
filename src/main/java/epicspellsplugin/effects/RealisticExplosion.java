@@ -10,9 +10,7 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.util.RayTraceResult;
 import org.bukkit.util.Vector;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 
 public class RealisticExplosion {
 
@@ -24,9 +22,19 @@ public class RealisticExplosion {
         List<Material> removedBlocksMaterials = new ArrayList<>();
         int rays = power*100;
         for(int i=0; i<rays; i++) {
-            Vector vel = new Vector(Utils.randomFloat(-1, 1), Utils.randomFloat(-1, 1), Utils.randomFloat(-1, 1)).normalize();
-            //System.out.println(vel);
-            RayTraceResult result = world.rayTraceBlocks(blocklocation, vel, power, FluidCollisionMode.NEVER);
+            Random r = new Random();
+            double x = r.nextGaussian();
+            double y = r.nextGaussian();
+            double z = r.nextGaussian();
+            x *= 1/Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2) + Math.pow(z, 2));
+            y *= 1/Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2) + Math.pow(z, 2));
+            z *= 1/Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2) + Math.pow(z, 2));
+            x *= power;
+            y *= power;
+            z *= power;
+            Vector vel = new Vector(x, y, z);
+            double length = vel.length();
+            RayTraceResult result = world.rayTraceBlocks(blocklocation, vel, length, FluidCollisionMode.NEVER);
             if(result != null){
                 Block hitBlock = result.getHitBlock();
                 Material material = hitBlock.getType();
