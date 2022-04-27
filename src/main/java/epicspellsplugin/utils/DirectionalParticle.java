@@ -27,7 +27,7 @@ import org.bukkit.util.Vector;
  */
 public class DirectionalParticle {
 
-    public DirectionalParticle(World world, Location location,  Particle particle, Vector velocity, double speed){
+    public DirectionalParticle(World world,  Particle particle, Location location, Vector velocity, double speed){
         world.spawnParticle(particle, location, 0, velocity.getX(), velocity.getY(), velocity.getZ(), speed);
     }
 }
