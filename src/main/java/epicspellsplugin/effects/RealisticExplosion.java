@@ -99,9 +99,10 @@ public class RealisticExplosion {
         for(Entity entity: nearbyEntities){
             Vector velocity = entity.getLocation().subtract(location).toVector();
             double distance = velocity.length();
-            double distancePower = (double) power/distance < power ? 1: (double) power/distance;
+            double distancePower = (double) power/distance < power ? (double) power/distance: power;
             if(!(entity instanceof FallingBlock)){
-                entity.setVelocity(velocity.normalize().multiply(distancePower).add(new Vector(0, 1, 0)));
+                //velocity.normalize().multiply(distancePower).add(new Vector(0, 1, 0))
+                entity.setVelocity(velocity.normalize().multiply(distancePower));
             }
             if(entity instanceof LivingEntity){
                 ((LivingEntity) entity).damage(distancePower*2);
