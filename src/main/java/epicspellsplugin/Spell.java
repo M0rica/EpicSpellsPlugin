@@ -58,15 +58,15 @@ public abstract class Spell {
     }
 
     public Location getPosition() {
-        return position;
+        return position.clone();
     }
 
     public Location getStartPosition() {
-        return startPosition;
+        return startPosition.clone();
     }
 
     public Vector getVelocity() {
-        return velocity;
+        return velocity.clone();
     }
 
     public double getMaxDistance() {
