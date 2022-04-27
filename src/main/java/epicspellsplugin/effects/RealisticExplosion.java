@@ -15,9 +15,7 @@ import java.util.*;
 public class RealisticExplosion {
 
     public RealisticExplosion(World world, Location location, int power, List<DirectionalParticleCollection> particles, double flyingBlockThreshold, boolean spawnFire){
-
-        Block block = location.getBlock();
-        Location blocklocation = block.getLocation();
+        Location blocklocation = location.getBlock().getLocation();
         List<Block> removedBlocks = new ArrayList<>();
         List<Material> removedBlocksMaterials = new ArrayList<>();
         int rays = power*100;
@@ -31,15 +29,15 @@ public class RealisticExplosion {
             y *= ratio*power;
             z *= ratio*power;
             Vector vel = new Vector(x, y, z);
-            double length = vel.length();
+            double length = vel.length()/2;
             RayTraceResult result = world.rayTraceBlocks(blocklocation, vel, length, FluidCollisionMode.ALWAYS);
             if(result != null){
                 Block hitBlock = result.getHitBlock();
                 Material material = hitBlock.getType();
                 if(!material.isAir()){
                     float blastResistance = material.getBlastResistance();
-                    if(blastResistance < 100){
-                        boolean removeBlock = Utils.randomFloat(0, 1) > blastResistance/100;
+                    if(blastResistance < power*10){
+                        boolean removeBlock = Utils.randomFloat(0, power) > blastResistance/power*10;
                         if(removeBlock){
                             hitBlock.setType(Material.AIR);
                             removedBlocks.add(hitBlock);
@@ -50,16 +48,24 @@ public class RealisticExplosion {
             }
         }
         if(spawnFire) {
-            for (int i = 0; i < rays / 10; i++) {
+            int numFire = 0;
+            for (int i = 0; i < rays / 5; i++) {
+                if(numFire >= power) {
+                    break;
+                }
                 Random r = new Random();
                 double x = r.nextGaussian();
                 double y = r.nextGaussian();
                 double z = r.nextGaussian();
                 Vector vel = new Vector(x, y, z).normalize();
-                RayTraceResult result = world.rayTraceBlocks(blocklocation, vel, power, FluidCollisionMode.NEVER);
+                double length = Math.min(power, 100);
+                RayTraceResult result = world.rayTraceBlocks(blocklocation, vel, length, FluidCollisionMode.NEVER);
                 if (result != null) {
-                    System.out.println(result.getHitPosition());
-                    result.getHitPosition().toLocation(world).getBlock().setType(Material.FIRE);
+                    Block block = result.getHitPosition().toLocation(world).getBlock();
+                    if(block.getType().getBlastResistance() < power*10) {
+                        block.setType(Material.FIRE);
+                        numFire++;
+                    }
                 }
             }
         }
@@ -102,6 +108,6 @@ public class RealisticExplosion {
             }
         }
 
-        world.playSound(location, Sound.ENTITY_GENERIC_EXPLODE, 10, 0);
+        world.playSound(location, Sound.ENTITY_GENERIC_EXPLODE, 10F, 0.6F);
     }
 }
