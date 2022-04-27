@@ -37,7 +37,7 @@ public class RealisticExplosion {
                 if(!material.isAir()){
                     float blastResistance = material.getBlastResistance();
                     if(blastResistance < power*10){
-                        boolean removeBlock = Utils.randomFloat(0, power) > blastResistance/power*10;
+                        boolean removeBlock = Utils.randomFloat(0, power) > blastResistance/(power*10);
                         if(removeBlock){
                             hitBlock.setType(Material.AIR);
                             removedBlocks.add(hitBlock);
