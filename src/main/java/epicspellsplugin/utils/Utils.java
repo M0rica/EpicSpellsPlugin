@@ -24,4 +24,9 @@ public class Utils {
         Random r = new Random();
         return r.nextFloat() * (max-min) + min;
     }
+
+    public static double randomDouble(double min, double max){
+        Random r = new Random();
+        return r.nextDouble() * (max-min) + min;
+    }
 }
