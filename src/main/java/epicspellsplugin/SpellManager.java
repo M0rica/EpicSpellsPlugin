@@ -18,6 +18,7 @@ package epicspellsplugin;
 
 import epicspellsplugin.exceptions.NotEnoughManaException;
 import epicspellsplugin.exceptions.SpellCooldownException;
+import epicspellsplugin.spells.ArrowStorm;
 import epicspellsplugin.spells.Explosion;
 import epicspellsplugin.spells.Fireball;
 import epicspellsplugin.spells.PowerStrike;
@@ -64,6 +65,8 @@ public class SpellManager {
         wraper = new SpellWraper("PowerStrike", new PowerStrike(), 150, 150);
         registerSpell(wraper);
         wraper = new SpellWraper("Explosion", new Explosion(), 1, 1);
+        registerSpell(wraper);
+        wraper = new SpellWraper("ArrowStorm", new ArrowStorm(), 150, 100);
         registerSpell(wraper);
     }
     
@@ -127,6 +130,7 @@ public class SpellManager {
                 }
                 //RayTraceResult trace = world.rayTrace(position, velocity, velocity.length(), fluidCollision, true, spell.getSize(), null);
                 // round up length because spell will be in the most distant block
+               velocity = velocity.length() != 0 ? velocity: new Vector(0, 0.000001, 0);
                 BlockIterator blockIterator = new BlockIterator(world, position.toVector(), velocity, 0, (int) Math.ceil(velocity.length()));
                 while(blockIterator.hasNext()){
                     Block block = blockIterator.next();
