@@ -16,7 +16,6 @@
  */
 package epicspellsplugin.spells;
 
-import epicspellsplugin.effects.ExplosionLarge;
 import epicspellsplugin.BaseSpell;
 
 import java.util.ArrayList;
@@ -58,9 +57,6 @@ public class Fireball extends BaseSpell{
         particles.add(new DirectionalParticleCollection(world, Particle.SMALL_FLAME, position, velocity, 20, 0.1));
         particles.add(new DirectionalParticleCollection(world, Particle.SMOKE_LARGE, position, velocity, 15, 0.1));
         particles.add(new DirectionalParticleCollection(world, Particle.SMOKE_NORMAL, position, velocity, 16, 0.1));
-        //world.spawnParticle(Particle.SMALL_FLAME, position, 20, size, size, size, 0.1);
-        //world.spawnParticle(Particle.SMOKE_LARGE, position, 15, size, size, size, 0.1);
-        //world.spawnParticle(Particle.SMOKE_NORMAL, position, 16, size, size, size, 0.1);
         for(DirectionalParticleCollection temp: particles){
             temp.randomizeLocations(1);
             temp.adjustVelocities();
