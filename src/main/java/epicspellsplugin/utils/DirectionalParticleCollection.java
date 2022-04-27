@@ -60,7 +60,7 @@ public class DirectionalParticleCollection {
         for(int i=0; i<particleLocations.size(); i++){
             //System.out.println("spawn");
             //System.out.println(world.toString() + particleLocations.get(i).toString() + particle.toString() + particleVelocities.get(i).toString() + String.valueOf(speed));
-            new DirectionalParticle(world, particleLocations.get(i), particle, particleVelocities.get(i), speed);
+            new DirectionalParticle(world, particle, particleLocations.get(i), particleVelocities.get(i), speed);
         }
     }
 
