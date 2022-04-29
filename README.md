@@ -1,5 +1,5 @@
 # EpicSpellsPlugin
-EpicSpellsPlugin is a Minecraft plugin for version 1.18+ that aims to add magic spells to the game for epic pvp and pve fights.
+EpicSpellsPlugin is a Minecraft Spigot plugin for version 1.18+ that aims to add magic spells to the game for epic pvp and pve fights.
 
 <a href="http://www.youtube.com/watch?feature=player_embedded&v=GhgQbvWPXUk
 " target="_blank"><img src="http://img.youtube.com/vi/GhgQbvWPXUk/sddefault.jpg" 
@@ -15,7 +15,7 @@ This plugin is still in very early development, which is why there aren't that m
 
 ## Installation & usage
 - install a Spigot server for 1.18 or higher
-- download the EpicSpellsPlugin.jarfrom the latest release and put it in your server's `plugins` folder
+- download the EpicSpellsPlugin.jar from the latest release and put it in your server's `plugins` folder
 - cast any spell by running `/spell cast <spellname>` and have fun!
 
 ## Planned features
