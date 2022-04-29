@@ -20,5 +20,5 @@ This plugin is still in very early development, which is why there aren't that m
 
 ## Planned features
 - easy spell casting by using a wand and/or items with special abilities
-- interaction of spells if to spells hit one another, for example to make a defence spell that blocks other spells
+- interaction of spells if two spells hit one another, for example to make a defence spell that blocks other spells
 - more pre-made effects to use in spells, such as ice spikes
