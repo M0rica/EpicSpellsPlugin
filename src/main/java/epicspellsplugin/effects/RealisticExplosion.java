@@ -18,7 +18,7 @@ public class RealisticExplosion {
         Location blocklocation = location.getBlock().getLocation();
         List<Block> removedBlocks = new ArrayList<>();
         List<Material> removedBlocksMaterials = new ArrayList<>();
-        int rays = power*100;
+        int rays = (int)Math.pow(power*7, 2);
         for(int i=0; i<rays; i++) {
             Random r = new Random();
             double x = r.nextGaussian();
@@ -30,35 +30,35 @@ public class RealisticExplosion {
             z *= ratio*power;
             Vector vel = new Vector(x, y, z);
             double length = vel.length()/2;
-            RayTraceResult result = world.rayTraceBlocks(blocklocation, vel, length, FluidCollisionMode.ALWAYS);
+            RayTraceResult result = world.rayTraceBlocks(blocklocation, vel, length, FluidCollisionMode.SOURCE_ONLY);
             if(result != null){
                 Block hitBlock = result.getHitBlock();
                 Material material = hitBlock.getType();
                 if(!material.isAir()){
                     float blastResistance = material.getBlastResistance();
                     if(blastResistance < power*10){
-                        boolean removeBlock = Utils.randomFloat(0, power) > blastResistance/(power*10);
-                        if(removeBlock){
-                            hitBlock.setType(Material.AIR);
-                            removedBlocks.add(hitBlock);
-                            removedBlocksMaterials.add(material);
-                        }
+                        //boolean removeBlock = Utils.randomFloat(0, power) > blastResistance/(power*10);
+                        //if(removeBlock){
+                        hitBlock.setType(Material.AIR);
+                        removedBlocks.add(hitBlock);
+                        removedBlocksMaterials.add(material);
+                        //}
                     }
                 }
             }
         }
         if(spawnFire) {
             int numFire = 0;
-            for (int i = 0; i < rays / 5; i++) {
-                if(numFire >= power) {
+            for (int i = 0; i < power*10; i++) {
+                /*if(numFire >= power) {
                     break;
-                }
+                }*/
                 Random r = new Random();
                 double x = r.nextGaussian();
                 double y = r.nextGaussian();
                 double z = r.nextGaussian();
                 Vector vel = new Vector(x, y, z).normalize();
-                double length = Math.min(power, 100);
+                double length = Math.min(power, 120);
                 RayTraceResult result = world.rayTraceBlocks(blocklocation, vel, length, FluidCollisionMode.NEVER);
                 if (result != null) {
                     Block block = result.getHitPosition().toLocation(world).getBlock();
@@ -69,8 +69,12 @@ public class RealisticExplosion {
                 }
             }
         }
-
+        int fallingBlockLimit = 1000;
+        int fallingBlocks = 0;
         for(int i=0; i<removedBlocks.size(); i++){
+            if(fallingBlocks > fallingBlockLimit){
+                break;
+            }
             Block temp = removedBlocks.get(i);
             if(Utils.randomFloat(0, 1) < flyingBlockThreshold) {
                 Location l = temp.getLocation().add(0, 1, 0);
@@ -79,6 +83,7 @@ public class RealisticExplosion {
                     FallingBlock fallingBlock = world.spawnFallingBlock(l, material.createBlockData());
                     try {
                         fallingBlock.setVelocity(l.subtract(location).toVector().normalize().setY(Utils.randomFloat(0.1F, 1)).multiply((double) power / 10));
+                        fallingBlocks++;
                     } catch (IllegalArgumentException e) {
                         System.out.println("Rerun");
                         fallingBlock.remove();
