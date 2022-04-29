@@ -33,7 +33,7 @@ public class ArrowStorm extends BaseSpell {
     public void tick(){
         super.tick();
         double radius = 6;
-        int numPoints = 40;
+        int numPoints = 30;
         Vector vel = new Vector();
         if(lifetime % 10 == 0) {
             List<DirectionalParticleCollection> particles = new ArrayList<>();
