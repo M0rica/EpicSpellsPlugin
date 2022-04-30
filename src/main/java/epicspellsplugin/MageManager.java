@@ -40,6 +40,11 @@ public class MageManager {
             mage.tick();
         }
     }
+
+    public void castSpell(Mage mage, SpellWraper spellWraper){
+        removeMana(mage, spellWraper.getManaCost());
+        addCooldown(mage, spellWraper.getSpellName(), spellWraper.getCooldown());
+    }
     
     public void addPlayer(Player player){
         if(!players.keySet().contains(player)){
@@ -50,9 +55,12 @@ public class MageManager {
     public void removePlayer(Player player){
         players.remove(player);
     }
+
+    public void removeMana(Mage mage, int amount){
+        mage.updateMana(-amount);
+    }
     
-    public void addCooldown(Player player, SpellWraper spellWraper){
-        Mage mage = getMage(player);
-        mage.addCooldown(spellWraper);
+    public void addCooldown(Mage mage, String spellName, int cooldown){
+        mage.addCooldown(spellName, cooldown);
     }
 }

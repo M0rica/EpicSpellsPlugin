@@ -61,11 +61,11 @@ public class Mage {
         }
     }
     
-    public void updateManaBy(int value){
+    public void updateMana(int value){
         mana += value;
     }
     
-    public void addCooldown(SpellWraper spellWraper){
-        spellCooldowns.put(spellWraper.getSpellName(), spellWraper.getCooldown());
+    public void addCooldown(String spellName, int cooldown){
+        spellCooldowns.put(spellName, cooldown);
     }
 }

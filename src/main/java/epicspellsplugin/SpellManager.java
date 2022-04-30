@@ -110,7 +110,9 @@ public class SpellManager {
                 return;
             }
             BaseSpell spell = spellWraper.getSpell();
-            mageManager.addCooldown(player, spellWraper);
+            System.out.println("Before " + mage.getMana());
+            mageManager.castSpell(mage, spellWraper);
+            System.out.println("After " + mage.getMana());
             spawnSpell(spell, player, name, 0);
         } else {
             player.sendMessage("No such spell");
