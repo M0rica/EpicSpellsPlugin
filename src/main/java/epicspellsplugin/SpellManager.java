@@ -208,7 +208,6 @@ public class SpellManager {
         } while(activeSpells.containsKey(activeSpellID));
         spell.setAlive(true);
         spell.init(player.getWorld(), player, activeSpellID, parentID, name);
-        System.out.println(activeSpellID);
         activeSpells.put(activeSpellID, spell);
     }
     
