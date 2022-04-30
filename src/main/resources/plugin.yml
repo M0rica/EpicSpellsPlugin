@@ -1,7 +1,7 @@
 ## YAML Template.
 name: EpicSpellsPlugin
 main: epicspellsplugin.EpicSpellsPlugin
-version: 0.1
+version: 0.1-dev.2
 api-version: 1.18
 author: M0rica
 website: https://github.com/M0rica/EpicSpellsPlugin
