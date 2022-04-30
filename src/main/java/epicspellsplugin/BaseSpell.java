@@ -30,8 +30,9 @@ import org.bukkit.util.Vector;
 public class BaseSpell extends Spell implements SpellInteraction{
 
     @Override
-    public void init(World world, Player player, int id, int pID, String name){
+    public void init(SpellManager spellManager, World world, Player player, int id, int pID, String name){
         this.world = world;
+        this.spellManager = spellManager;
         this.player = player;
         this.id = id;
         parentID = pID;

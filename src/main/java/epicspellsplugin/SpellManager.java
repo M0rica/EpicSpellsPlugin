@@ -96,7 +96,7 @@ public class SpellManager {
         return children.toArray(new BaseSpell[children.size()]);
     }
     
-    public void castSpell(String name, Player player){
+    public BaseSpell castSpell(String name, Player player){
         SpellWraper spellWraper = getSpellWraper(name);
         if(spellWraper != null){
             Mage mage = mageManager.getMage(player);
@@ -104,17 +104,29 @@ public class SpellManager {
                 spellWraper.canCastSpell(mage);
             } catch(NotEnoughManaException e){
                 player.sendMessage("Not enough Mana to cast spell");
-                return;
+                return null;
             } catch(SpellCooldownException e){
                 player.sendMessage("Spell has cooldown");
-                return;
+                return null;
             }
             BaseSpell spell = spellWraper.getSpell();
             mageManager.castSpell(mage, spellWraper);
             spawnSpell(spell, player, name, 0);
+            return spell;
         } else {
             player.sendMessage("No such spell");
+            return null;
         }
+    }
+
+    public BaseSpell castSpell(String name, int parentID, Player player){
+        SpellWraper spellWraper = getSpellWraper(name);
+        if(spellWraper != null){
+            BaseSpell spell = spellWraper.getSpell();
+            spawnSpell(spell, player, name, parentID);
+            return spell;
+        }
+        return null;
     }
     
     public void tick(){
@@ -207,7 +219,7 @@ public class SpellManager {
             }
         } while(activeSpells.containsKey(activeSpellID));
         spell.setAlive(true);
-        spell.init(player.getWorld(), player, activeSpellID, parentID, name);
+        spell.init(this, player.getWorld(), player, activeSpellID, parentID, name);
         activeSpells.put(activeSpellID, spell);
     }
     

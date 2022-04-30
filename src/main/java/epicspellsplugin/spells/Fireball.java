@@ -21,6 +21,7 @@ import epicspellsplugin.BaseSpell;
 import java.util.ArrayList;
 import java.util.List;
 
+import epicspellsplugin.SpellManager;
 import epicspellsplugin.effects.ExplosionMedium;
 import epicspellsplugin.utils.DirectionalParticleCollection;
 import org.bukkit.*;
@@ -39,8 +40,8 @@ public class Fireball extends BaseSpell{
     private Material hitMaterial;
     
     @Override
-    public void init(World world, Player player, int id, int parentID, String name){
-        super.init(world, player, id, parentID, name);
+    public void init(SpellManager spellManager, World world, Player player, int id, int parentID, String name){
+        super.init(spellManager, world, player, id, parentID, name);
         collideWithFluids = true;
         maxDistance = 50;
         maxLifeTime = 300;

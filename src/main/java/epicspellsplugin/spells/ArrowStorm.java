@@ -1,6 +1,7 @@
 package epicspellsplugin.spells;
 
 import epicspellsplugin.BaseSpell;
+import epicspellsplugin.SpellManager;
 import epicspellsplugin.effects.ExplosionMedium;
 import epicspellsplugin.utils.DirectionalParticle;
 import epicspellsplugin.utils.DirectionalParticleCollection;
@@ -20,8 +21,8 @@ import java.util.List;
 public class ArrowStorm extends BaseSpell {
 
     @Override
-    public void init(World world, Player player, int id, int parentID, String name){
-        super.init(world, player, id, parentID, name);
+    public void init(SpellManager spellManager, World world, Player player, int id, int parentID, String name){
+        super.init(spellManager, world, player, id, parentID, name);
 
         maxLifeTime = 120;
 

@@ -16,6 +16,7 @@
  */
 package epicspellsplugin.spells;
 
+import epicspellsplugin.SpellManager;
 import epicspellsplugin.effects.ExplosionLarge;
 import epicspellsplugin.effects.ExplosionMedium;
 import epicspellsplugin.BaseSpell;
@@ -42,8 +43,8 @@ public class PowerStrike extends BaseSpell{
     int power;
     
     @Override
-    public void init(World world, Player player, int id, int parentID, String name){
-        super.init(world, player, id, parentID, name);
+    public void init(SpellManager spellManager, World world, Player player, int id, int parentID, String name){
+        super.init(spellManager, world, player, id, parentID, name);
         maxDistance = 100;
         maxLifeTime = 300;
         velocity = player.getLocation().getDirection().multiply(3);

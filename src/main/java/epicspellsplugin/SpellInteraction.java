@@ -28,7 +28,7 @@ import org.bukkit.entity.Player;
  */
 public interface SpellInteraction {
     
-    public void init(World world, Player player, int id, int pID, String name);
+    public void init(SpellManager spellManager, World world, Player player, int id, int pID, String name);
     public void tick();
     public void on_entity_hit(Location location, Entity entity);
     public void on_player_hit(Location location, Player player);
