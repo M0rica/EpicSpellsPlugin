@@ -25,8 +25,6 @@ import epicspellsplugin.spells.PowerStrike;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.List;
-import java.util.Random;
 import java.util.Set;
 import java.util.logging.Logger;
 import org.bukkit.FluidCollisionMode;
@@ -51,12 +49,14 @@ public class SpellManager {
     
     private HashMap<String, SpellWraper> spells;
     private HashMap<Integer, BaseSpell> activeSpells;
+    private int activeSpellID;
     
     public SpellManager(Logger log, MageManager mageManager){
         this.log = log;
         this.mageManager = mageManager;
         activeSpells = new HashMap<>();
         spells = new HashMap<>();
+        activeSpellID = 0;
     }
     
     public void setup(){
@@ -199,14 +199,16 @@ public class SpellManager {
     }
     
     public void spawnSpell(BaseSpell spell, Player player, String name, int parentID){
-        Random random = new Random();
-        int id = random.nextInt(9999);
-        while(activeSpells.containsKey(id)){
-            id = random.nextInt(9999);
-        }
+        do{
+            if(activeSpellID == Integer.MAX_VALUE){
+                activeSpellID = 1;
+            } else {
+                activeSpellID++;
+            }
+        } while(activeSpells.containsKey(activeSpellID));
         spell.setAlive(true);
-        spell.init(player.getWorld(), player, id, parentID, name);
-        activeSpells.put(id, spell);
+        spell.init(player.getWorld(), player, activeSpellID, parentID, name);
+        activeSpells.put(activeSpellID, spell);
     }
     
 }
