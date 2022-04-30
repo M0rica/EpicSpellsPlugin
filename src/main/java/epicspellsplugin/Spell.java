@@ -120,5 +120,20 @@ public abstract class Spell {
     public void setAlive(boolean bool){
         alive = bool;
     }
-    
+
+    public void setPosition(Location position) {
+        this.position = position;
+    }
+
+    public void setStartPosition(Location startPosition) {
+        this.startPosition = startPosition;
+    }
+
+    public void setVelocity(Vector velocity) {
+        this.velocity = velocity;
+    }
+
+    public void setDaemon(boolean daemon) {
+        this.daemon = daemon;
+    }
 }
