@@ -26,12 +26,13 @@ import org.bukkit.entity.Player;
 public class Mage {
     
     private Player player;
-    private int mana;
+    private float mana, maxMana;
     private HashMap<String, Integer> spellCooldowns;
     
     public Mage(Player p){
         player = p;
         mana = 1000;
+        maxMana = 1000;
         spellCooldowns = new HashMap<>();
     }
 
@@ -39,16 +40,28 @@ public class Mage {
         return player;
     }
 
-    public int getMana() {
+    public float getMana() {
         return mana;
     }
-    
+
+    public float getMaxMana() {
+        return maxMana;
+    }
+
+    public void setMana(float mana) {
+        this.mana = mana;
+    }
+
+    public void setMaxMana(float maxMana) {
+        this.maxMana = maxMana;
+    }
+
     public boolean hasCooldown(String spellName){
         return spellCooldowns.containsKey(spellName);
     }
     
     public void tick(){
-        if(mana < 1000){
+        if(mana < maxMana){
             mana++;
         }
         for(String spell: spellCooldowns.keySet()){
@@ -59,6 +72,7 @@ public class Mage {
                 spellCooldowns.put(spell, cooldown);
             }
         }
+        player.setExp(maxMana/mana);
     }
     
     public void updateMana(int value){
