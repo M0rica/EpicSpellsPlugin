@@ -112,9 +112,9 @@ public class Mage {
         spellCooldowns.put(spellName, cooldown);
     }
 
-    public boolean canCastSpell(SpellWraper spellWraper) throws NotEnoughManaException, SpellCooldownException {
-        if(mana >= spellWraper.getManaCost()){
-            if(!hasCooldown(spellWraper.getSpellName())){
+    public boolean canCastSpell(SpellWrapper spellWrapper) throws NotEnoughManaException, SpellCooldownException {
+        if(mana >= spellWrapper.getManaCost()){
+            if(!hasCooldown(spellWrapper.getSpellName())){
                 return true;
             } else {
                 throw new SpellCooldownException();

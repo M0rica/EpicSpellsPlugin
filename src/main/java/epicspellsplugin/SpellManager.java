@@ -47,7 +47,7 @@ public class SpellManager {
     private Logger log;
     private MageManager mageManager;
     
-    private HashMap<String, SpellWraper> spells;
+    private HashMap<String, SpellWrapper> spells;
     private HashMap<Integer, BaseSpell> activeSpells;
     private int activeSpellID;
     
@@ -60,20 +60,20 @@ public class SpellManager {
     }
     
     public void setup(){
-        SpellWraper wraper = new SpellWraper("Fireball", new Fireball(), 50, 100);
+        SpellWrapper wraper = new SpellWrapper("Fireball", new Fireball(), 50, 100);
         registerSpell(wraper);
-        wraper = new SpellWraper("PowerStrike", new PowerStrike(), 150, 150);
+        wraper = new SpellWrapper("PowerStrike", new PowerStrike(), 150, 150);
         registerSpell(wraper);
-        wraper = new SpellWraper("Explosion", new Explosion(), 900, 100);
+        wraper = new SpellWrapper("Explosion", new Explosion(), 900, 100);
         registerSpell(wraper);
-        wraper = new SpellWraper("ArrowStorm", new ArrowStorm(), 150, 100);
+        wraper = new SpellWrapper("ArrowStorm", new ArrowStorm(), 150, 100);
         registerSpell(wraper);
     }
     
-    public void registerSpell(SpellWraper wraper){
-        String spellName = wraper.getSpellName();
+    public void registerSpell(SpellWrapper wrapper){
+        String spellName = wrapper.getSpellName();
         if(!spells.containsKey(spellName)){
-            spells.put(spellName, wraper);
+            spells.put(spellName, wrapper);
         } else {
             log.warning(String.format("Faild to register spell %s as there already is one with the same name!", spellName));
         }
@@ -84,7 +84,7 @@ public class SpellManager {
         return set.toArray(new String[set.size()]);
     }
     
-    private SpellWraper getSpellWraper(String name){
+    private SpellWrapper getSpellWrapper(String name){
         return spells.get(name);
     }
     
@@ -97,11 +97,11 @@ public class SpellManager {
     }
     
     public BaseSpell castSpell(String name, Player player){
-        SpellWraper spellWraper = getSpellWraper(name);
-        if(spellWraper != null){
+        SpellWrapper spellWrapper = getSpellWrapper(name);
+        if(spellWrapper != null){
             Mage mage = mageManager.getMage(player);
             try{
-                mage.canCastSpell(spellWraper);
+                mage.canCastSpell(spellWrapper);
             } catch(NotEnoughManaException e){
                 player.sendMessage("Not enough Mana to cast spell");
                 return null;
@@ -109,8 +109,8 @@ public class SpellManager {
                 player.sendMessage("Spell has cooldown");
                 return null;
             }
-            BaseSpell spell = spellWraper.getSpell();
-            mageManager.castSpell(mage, spellWraper);
+            BaseSpell spell = spellWrapper.getSpell();
+            mageManager.castSpell(mage, spellWrapper);
             spawnSpell(spell, player, name, 0);
             return spell;
         } else {
@@ -120,9 +120,9 @@ public class SpellManager {
     }
 
     public BaseSpell castSpell(String name, int parentID, Player player){
-        SpellWraper spellWraper = getSpellWraper(name);
-        if(spellWraper != null){
-            BaseSpell spell = spellWraper.getSpell();
+        SpellWrapper spellWrapper = getSpellWrapper(name);
+        if(spellWrapper != null){
+            BaseSpell spell = spellWrapper.getSpell();
             spawnSpell(spell, player, name, parentID);
             return spell;
         }

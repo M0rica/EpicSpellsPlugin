@@ -41,9 +41,9 @@ public class MageManager {
         }
     }
 
-    public void castSpell(Mage mage, SpellWraper spellWraper){
-        removeMana(mage, spellWraper.getManaCost());
-        addCooldown(mage, spellWraper.getSpellName(), spellWraper.getCooldown());
+    public void castSpell(Mage mage, SpellWrapper spellWrapper){
+        removeMana(mage, spellWrapper.getManaCost());
+        addCooldown(mage, spellWrapper.getSpellName(), spellWrapper.getCooldown());
     }
     
     public void addPlayer(Player player){

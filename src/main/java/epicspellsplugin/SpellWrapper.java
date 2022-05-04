@@ -16,18 +16,11 @@
  */
 package epicspellsplugin;
 
-import epicspellsplugin.exceptions.NotEnoughManaException;
-import epicspellsplugin.exceptions.SpellCooldownException;
-import java.lang.reflect.Constructor;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import org.bukkit.entity.Player;
-
 /**
  *
  * @author M0rica
  */
-public class SpellWraper {
+public class SpellWrapper {
     
     // cost of mana to cast this spell
     private int manaCost;
@@ -35,10 +28,10 @@ public class SpellWraper {
     private int cooldown;
     // name of the spell this metadata corresponds to
     private String name;
-    // actual Spell this wraper links to
+    // actual Spell this wrapper links to
     private BaseSpell spell;
     
-    public SpellWraper(String name, BaseSpell spell, int manaCost, int cooldown){
+    public SpellWrapper(String name, BaseSpell spell, int manaCost, int cooldown){
         this.name = name;
         this.spell = spell;
         this.manaCost = manaCost;
