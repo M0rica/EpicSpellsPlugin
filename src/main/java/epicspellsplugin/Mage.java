@@ -17,6 +17,10 @@
 package epicspellsplugin;
 
 import java.util.HashMap;
+
+import net.md_5.bungee.api.ChatMessageType;
+import net.md_5.bungee.api.chat.TextComponent;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 /**
@@ -31,7 +35,7 @@ public class Mage {
     
     public Mage(Player p){
         player = p;
-        mana = 1000;
+        mana = 0;
         maxMana = 1000;
         spellCooldowns = new HashMap<>();
     }
@@ -72,7 +76,18 @@ public class Mage {
                 spellCooldowns.put(spell, cooldown);
             }
         }
-        player.setExp(maxMana/mana);
+        int manaDisplay = (int) Math.floor(mana);
+        float manaRatio = mana/maxMana;
+        String progressbar = generateManaProgressbar(manaRatio);
+        String message = String.format("%sMana: |%s%s%s| %d", ChatColor.DARK_PURPLE, ChatColor.LIGHT_PURPLE, progressbar, ChatColor.DARK_PURPLE, manaDisplay);
+        player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(message));
+    }
+
+    private String generateManaProgressbar(float manaRatio){
+        String fill = "█";
+        String empty = "▒";
+        String progressbar = fill.repeat((int) Math.floor(manaRatio*10)) + empty.repeat((int) Math.ceil(10-manaRatio*10));
+        return progressbar;
     }
     
     public void updateMana(int value){
