@@ -64,7 +64,7 @@ public class SpellManager {
         registerSpell(wraper);
         wraper = new SpellWraper("PowerStrike", new PowerStrike(), 150, 150);
         registerSpell(wraper);
-        wraper = new SpellWraper("Explosion", new Explosion(), 1, 1);
+        wraper = new SpellWraper("Explosion", new Explosion(), 900, 100);
         registerSpell(wraper);
         wraper = new SpellWraper("ArrowStorm", new ArrowStorm(), 150, 100);
         registerSpell(wraper);
