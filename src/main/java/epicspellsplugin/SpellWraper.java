@@ -59,30 +59,11 @@ public class SpellWraper {
     
     public BaseSpell getSpell(){
         try{ 
-            return (BaseSpell) spell.getClass().newInstance();
+            return spell.getClass().newInstance();
         } catch(IllegalAccessException | InstantiationException e){
             e.printStackTrace();
         }
-        /*Class<? extends BaseSpell> c = spell.getClass();
-        try {
-            Constructor<? extends BaseSpell> ctr = c.getConstructor(new Class<?>[]{Player.class, int.class, int.class, String.class});
-            return ctr.newInstance(new Object[]{});
-        } catch (NoSuchMethodException | SecurityException e){
-            
-        }*/
         return null;
-    }
-    
-    public boolean canCastSpell(Mage mage) throws NotEnoughManaException, SpellCooldownException{
-        if(mage.getMana() >= manaCost){
-            if(!mage.hasCooldown(name)){
-                return true;
-            } else {
-                throw new SpellCooldownException();
-            }
-        } else {
-            throw new NotEnoughManaException();
-        }
     }
     
 }

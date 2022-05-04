@@ -101,7 +101,7 @@ public class SpellManager {
         if(spellWraper != null){
             Mage mage = mageManager.getMage(player);
             try{
-                spellWraper.canCastSpell(mage);
+                mage.canCastSpell(spellWraper);
             } catch(NotEnoughManaException e){
                 player.sendMessage("Not enough Mana to cast spell");
                 return null;

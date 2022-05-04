@@ -18,6 +18,8 @@ package epicspellsplugin;
 
 import java.util.HashMap;
 
+import epicspellsplugin.exceptions.NotEnoughManaException;
+import epicspellsplugin.exceptions.SpellCooldownException;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.ChatColor;
@@ -108,5 +110,17 @@ public class Mage {
     
     public void addCooldown(String spellName, int cooldown){
         spellCooldowns.put(spellName, cooldown);
+    }
+
+    public boolean canCastSpell(SpellWraper spellWraper) throws NotEnoughManaException, SpellCooldownException {
+        if(mana >= spellWraper.getManaCost()){
+            if(!hasCooldown(spellWraper.getSpellName())){
+                return true;
+            } else {
+                throw new SpellCooldownException();
+            }
+        } else {
+            throw new NotEnoughManaException();
+        }
     }
 }
