@@ -78,9 +78,11 @@ public class Mage {
     public void tick(){
         if(mana < maxMana){
             mana += manaRegeneration;
-            if(mana > maxMana){
-                mana = maxMana;
-            }
+        }
+        if(mana > maxMana){
+            mana = maxMana;
+        } else if(mana < 0){
+            mana = 0;
         }
         for(String spell: spellCooldowns.keySet()){
             int cooldown = spellCooldowns.get(spell)-1;
@@ -104,9 +106,11 @@ public class Mage {
         return progressbar;
     }
     
-    public void updateMana(int value){
+    public void addMana(float value){
         mana += value;
     }
+
+    public void removeMana(float value){mana -= value;}
     
     public void addCooldown(String spellName, int cooldown){
         spellCooldowns.put(spellName, cooldown);
