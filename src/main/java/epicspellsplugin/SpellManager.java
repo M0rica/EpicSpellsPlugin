@@ -64,7 +64,7 @@ public class SpellManager {
         registerSpell(wraper);
         wraper = new SpellWrapper("PowerStrike", new PowerStrike(), 150, 150);
         registerSpell(wraper);
-        wraper = new SpellWrapper("Explosion", new Explosion(), 900, 100);
+        wraper = new SpellWrapper("Explosion", new Explosion(), 100, 100);
         registerSpell(wraper);
         wraper = new SpellWrapper("ArrowStorm", new ArrowStorm(), 150, 100);
         registerSpell(wraper);
@@ -100,19 +100,24 @@ public class SpellManager {
         SpellWrapper spellWrapper = getSpellWrapper(name);
         if(spellWrapper != null){
             Mage mage = mageManager.getMage(player);
-            try{
-                mage.canCastSpell(spellWrapper);
-            } catch(NotEnoughManaException e){
-                player.sendMessage("Not enough Mana to cast spell");
-                return null;
-            } catch(SpellCooldownException e){
-                player.sendMessage("Spell has cooldown");
+            if(mage != null) {
+                try {
+                    mage.canCastSpell(spellWrapper);
+                } catch (NotEnoughManaException e) {
+                    player.sendMessage("Not enough Mana to cast spell");
+                    return null;
+                } catch (SpellCooldownException e) {
+                    player.sendMessage("Spell has cooldown");
+                    return null;
+                }
+                BaseSpell spell = spellWrapper.getSpell();
+                mageManager.castSpell(mage, spellWrapper);
+                spawnSpell(spell, player, name, 0);
+                return spell;
+            } else {
+                player.sendMessage("Your are not a mage");
                 return null;
             }
-            BaseSpell spell = spellWrapper.getSpell();
-            mageManager.castSpell(mage, spellWrapper);
-            spawnSpell(spell, player, name, 0);
-            return spell;
         } else {
             player.sendMessage("No such spell");
             return null;
