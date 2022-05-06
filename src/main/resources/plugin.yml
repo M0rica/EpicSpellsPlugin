@@ -7,5 +7,14 @@ author: M0rica
 website: https://github.com/M0rica/EpicSpellsPlugin
 commands:
     spell:
-        description: Cast a spell
+        description: "Cast a spell"
         usage: "Usage: /spell <spellname>"
+    mage:
+        description: "Commands for interacting with players"
+        usage: "/mage <option>"
+    addmage:
+        description: "Make a player a Mage"
+        usage: "/addmage <player>"
+    removemage:
+        description: "Remove a player from being a Mage"
+        usage: "/removemage <player>"
