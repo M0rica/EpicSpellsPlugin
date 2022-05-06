@@ -14,11 +14,14 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package epicspellsplugin;
+package tabExecutors;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
+import epicspellsplugin.EpicSpellsPlugin;
+import epicspellsplugin.SpellManager;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
@@ -59,8 +62,8 @@ public class SpellTabExecutor implements TabExecutor{
     }
 
     @Override
-    public boolean onCommand(CommandSender cs, Command cmnd, String string, String[] strings) {
-        return esp.onCommand(cs, cmnd, string, strings);
+    public boolean onCommand(CommandSender cs, Command cmd, String string, String[] strings) {
+        //return esp.onCommand(cs, cmd, string, strings);
+        return false;
     }
-    
 }
