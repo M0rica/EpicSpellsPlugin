@@ -57,7 +57,7 @@ public class MageTabExecutor implements TabExecutor{
         } else if(args.length == 2){
 
             commands.add("mana");
-            commands.add("maximumMana");
+            commands.add("manaMaximum");
             commands.add("manaRegeneration");
             StringUtil.copyPartialMatches(args[1], commands, completions);
         } else if(args.length == 3){
@@ -68,7 +68,7 @@ public class MageTabExecutor implements TabExecutor{
                     commands.add("get");
                     commands.add("remove");
                     break;
-                case "maximumMana": case "manaRegeneration":
+                case "manaMaximum": case "manaRegeneration":
                     commands.add("set");
                     commands.add("get");
                     break;
@@ -109,7 +109,7 @@ public class MageTabExecutor implements TabExecutor{
                             }
                         }
                         break;
-                    case "maximumMana":
+                    case "manaMaximum":
                         if(args.length == 4){
                             try {
                                 float value = Float.valueOf(args[3]);
