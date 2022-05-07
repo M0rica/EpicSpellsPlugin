@@ -12,6 +12,7 @@ commands:
     mage:
         description: "Commands for interacting with players"
         usage: "/mage <option>"
+        permission: op
     addmage:
         description: "Make a player a Mage"
         usage: "/addmage <player>"

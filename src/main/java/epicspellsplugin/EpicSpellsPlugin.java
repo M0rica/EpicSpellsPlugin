@@ -72,7 +72,12 @@ public class EpicSpellsPlugin extends JavaPlugin{
         switch (cmd.getName()) {
             case "addmage":
                 if (args.length == 1) {
-                    mageManager.addPlayer(Bukkit.getPlayer(args[0]));
+                    if(sender.isOp()) {
+                        mageManager.addPlayer(Bukkit.getPlayer(args[0]));
+                        sender.sendMessage("You are now a Mage");
+                    } else {
+                        sender.sendMessage("You don't have permissions to run this command!");
+                    }
                 } else {
                     if (sender instanceof Player) {
                         mageManager.addPlayer((Player) sender);
@@ -81,7 +86,12 @@ public class EpicSpellsPlugin extends JavaPlugin{
                 return true;
             case "removemage":
                 if (args.length == 1) {
-                    mageManager.removePlayer(Bukkit.getPlayer(args[0]));
+                    if(sender.isOp()) {
+                        mageManager.removePlayer(Bukkit.getPlayer(args[0]));
+                        sender.sendMessage("You are no longer a Mage");
+                    } else {
+                        sender.sendMessage("You don't have permissions to run this command!");
+                    }
                 } else {
                     if (sender instanceof Player) {
                         mageManager.removePlayer((Player) sender);
