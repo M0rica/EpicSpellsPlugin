@@ -21,6 +21,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import epicspellsplugin.BaseSpell;
 import epicspellsplugin.EpicSpellsPlugin;
 import epicspellsplugin.SpellManager;
 import org.bukkit.command.Command;
@@ -78,28 +79,27 @@ public class SpellTabExecutor implements TabExecutor{
                 if (args.length >= 2 && sender instanceof Player) {
                     int spellID = spellManager.castSpell(args[1], (Player) sender);
                     if(spellID != -1) {
-                        sender.sendMessage(String.format("Cast spell %s with id %s", args[1], spellID));
+                        sender.sendMessage(String.format("Cast spell %s with ID %s", args[1], spellID));
                     }
                     return true;
                 } else {
                     return false;
                 }
-            case "terminate":
+            case "terminate": case "kill":
                 if(args.length >= 2){
+                    String action = args[0];
                     try {
                         int spellID = Integer.valueOf(args[1]);
-                        spellManager.terminateSpell(spellID);
-                    } catch (NumberFormatException e){
-                        sender.sendMessage(String.format("Error: %s is not a number!", args[1]));
-                    }
-                    return true;
-                }
-                return false;
-            case "kill":
-                if(args.length >= 2){
-                    try {
-                        int spellID = Integer.valueOf(args[1]);
-                        spellManager.killSpell(spellID);
+                        if(Arrays.stream(spellManager.getActiveSpellIDs()).anyMatch(x -> x==spellID)){
+                            BaseSpell spell = spellManager.getSpell(spellID);
+                            if(action.equals("terminate")){
+                                spellManager.terminateSpell(spellID);
+                                sender.sendMessage(String.format("Terminated spell with ID %d (%s)", spellID, spell.getName()));
+                            } else {
+                                spellManager.killSpell(spellID);
+                                sender.sendMessage(String.format("Killed spell with ID %d (%s)", spellID, spell.getName()));
+                            }
+                        }
                     } catch (NumberFormatException e){
                         sender.sendMessage(String.format("Error: %s is not a number!", args[1]));
                     }

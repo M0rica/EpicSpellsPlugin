@@ -92,12 +92,15 @@ public class MageTabExecutor implements TabExecutor{
                                 switch (args[2]){
                                     case "add":
                                         mage.addMana(value);
+                                        sender.sendMessage(String.format("Added %.2f Mana to player %s ", value, args[0]));
                                         break;
                                     case "remove":
                                         mage.removeMana(value);
+                                        sender.sendMessage(String.format("Removed %.2f Mana from player %s ", value, args[0]));
                                         break;
                                     case "set":
                                         mage.setMana(value);
+                                        sender.sendMessage(String.format("Set Mana of player %s to %.2f", args[0], value));
                                         break;
                                 }
                             } catch (NumberFormatException e){
@@ -115,6 +118,7 @@ public class MageTabExecutor implements TabExecutor{
                                 float value = Float.valueOf(args[3]);
                                 if(args[2].equals("set")){
                                     mage.setMaxMana(value);
+                                    sender.sendMessage(String.format("Set maximum Mana of player %s to %.2f", args[0], value));
                                 }
                             } catch (NumberFormatException e){
                                 sender.sendMessage(String.format("Error: %s is not a number!", args[3]));
@@ -131,6 +135,7 @@ public class MageTabExecutor implements TabExecutor{
                                 float value = Float.valueOf(args[3]);
                                 if(args[2].equals("set")){
                                     mage.setManaRegeneration(value);
+                                    sender.sendMessage(String.format("Set Mana regeneration rate of player %s to %.2f", args[0], value));
                                 }
                             } catch (NumberFormatException e){
                                 sender.sendMessage(String.format("Error: %s is not a number!", args[3]));
@@ -141,10 +146,9 @@ public class MageTabExecutor implements TabExecutor{
                             }
                         }
                         break;
-                    case "remove":
-                        mageManager.removePlayer(mage.getPlayer());
                 }
             }
+            sender.sendMessage(String.format("Player %s is not a Mage!", args[0]));
             return true;
         }
         return false;
