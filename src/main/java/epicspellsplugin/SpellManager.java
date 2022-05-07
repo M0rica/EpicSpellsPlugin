@@ -105,45 +105,6 @@ public class SpellManager {
                 .forEach(spell -> { children.add(spell); });
         return children.toArray(new BaseSpell[children.size()]);
     }
-
-    public boolean onCommand(CommandSender sender, Command cmd, String string, String[] args){
-        switch (args[0]) {
-            case "cast":
-                if (args.length >= 2 && sender instanceof Player) {
-                    int spellID = castSpell(args[1], (Player) sender);
-                    if(spellID != -1) {
-                        sender.sendMessage(String.format("Cast spell %s with id %s", args[1], spellID));
-                    }
-                    return true;
-                } else {
-                    return false;
-                }
-            case "terminate":
-                if(args.length >= 2){
-                    try {
-                        int spellID = Integer.valueOf(args[1]);
-                        terminateSpell(spellID);
-                    } catch (NumberFormatException e){
-                        sender.sendMessage(String.format("Error: %s is not a number!", args[1]));
-                    }
-                    return true;
-                }
-                return false;
-            case "kill":
-                if(args.length >= 2){
-                    try {
-                        int spellID = Integer.valueOf(args[1]);
-                        killSpell(spellID);
-                    } catch (NumberFormatException e){
-                        sender.sendMessage(String.format("Error: %s is not a number!", args[1]));
-                    }
-                    return true;
-                }
-                return false;
-            default:
-                return false;
-        }
-    }
     
     public int castSpell(String name, Player player){
         SpellWrapper spellWrapper = getSpellWrapper(name);

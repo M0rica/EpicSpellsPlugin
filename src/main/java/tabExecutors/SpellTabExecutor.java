@@ -26,6 +26,7 @@ import epicspellsplugin.SpellManager;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
+import org.bukkit.entity.Player;
 import org.bukkit.util.StringUtil;
 
 /**
@@ -71,7 +72,42 @@ public class SpellTabExecutor implements TabExecutor{
     }
 
     @Override
-    public boolean onCommand(CommandSender cs, Command cmd, String string, String[] strings) {
-        return spellManager.onCommand(cs, cmd, string, strings);
+    public boolean onCommand(CommandSender sender, Command cmd, String string, String[] args){
+        switch (args[0]) {
+            case "cast":
+                if (args.length >= 2 && sender instanceof Player) {
+                    int spellID = spellManager.castSpell(args[1], (Player) sender);
+                    if(spellID != -1) {
+                        sender.sendMessage(String.format("Cast spell %s with id %s", args[1], spellID));
+                    }
+                    return true;
+                } else {
+                    return false;
+                }
+            case "terminate":
+                if(args.length >= 2){
+                    try {
+                        int spellID = Integer.valueOf(args[1]);
+                        spellManager.terminateSpell(spellID);
+                    } catch (NumberFormatException e){
+                        sender.sendMessage(String.format("Error: %s is not a number!", args[1]));
+                    }
+                    return true;
+                }
+                return false;
+            case "kill":
+                if(args.length >= 2){
+                    try {
+                        int spellID = Integer.valueOf(args[1]);
+                        spellManager.killSpell(spellID);
+                    } catch (NumberFormatException e){
+                        sender.sendMessage(String.format("Error: %s is not a number!", args[1]));
+                    }
+                    return true;
+                }
+                return false;
+            default:
+                return false;
+        }
     }
 }
