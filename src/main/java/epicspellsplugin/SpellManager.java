@@ -31,6 +31,8 @@ import org.bukkit.FluidCollisionMode;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.block.Block;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
@@ -83,6 +85,14 @@ public class SpellManager {
         Set<String> set = spells.keySet();
         return set.toArray(new String[set.size()]);
     }
+
+    public Integer[] getActiveSpellIDs(){
+        return activeSpells.keySet().toArray(new Integer[0]);
+    }
+
+    public BaseSpell getSpell(int spellID){
+        return activeSpells.get(spellID);
+    }
     
     private SpellWrapper getSpellWrapper(String name){
         return spells.get(name);
@@ -94,6 +104,42 @@ public class SpellManager {
                 .filter(spell -> (spell.getParentID() == parentID))
                 .forEach(spell -> { children.add(spell); });
         return children.toArray(new BaseSpell[children.size()]);
+    }
+
+    public boolean onCommand(CommandSender sender, Command cmd, String string, String[] args){
+        switch (args[0]) {
+            case "cast":
+                if (args.length >= 2 && sender instanceof Player) {
+                    castSpell(args[1], (Player) sender);
+                    return true;
+                } else {
+                    return false;
+                }
+            case "terminate":
+                if(args.length >= 2){
+                    try {
+                        int spellID = Integer.valueOf(args[1]);
+                        terminateSpell(spellID);
+                    } catch (NumberFormatException e){
+                        sender.sendMessage(String.format("Error: %s is not a number!", args[1]));
+                    }
+                    return true;
+                }
+                return false;
+            case "kill":
+                if(args.length >= 2){
+                    try {
+                        int spellID = Integer.valueOf(args[1]);
+                        killSpell(spellID);
+                    } catch (NumberFormatException e){
+                        sender.sendMessage(String.format("Error: %s is not a number!", args[1]));
+                    }
+                    return true;
+                }
+                return false;
+            default:
+                return false;
+        }
     }
     
     public BaseSpell castSpell(String name, Player player){
@@ -199,18 +245,35 @@ public class SpellManager {
            }
        } 
     }
+
+    public void terminateSpell(int spellID){
+        terminateSpell(getSpell(spellID));
+    }
     
     public void terminateSpell(BaseSpell spell){
         terminateSpell(spell, spell.getPosition());
     }
     
     public void terminateSpell(BaseSpell spell, Location location){
-        int id = spell.getId();
-        activeSpells.remove(id);
-        spell.terminate(location);
-        for(BaseSpell childSpell: getChildSpells(id)){
-            if(childSpell.isDaemon()){
-                 childSpell.setAlive(false);
+        if(spell != null) {
+            spell.terminate(location);
+            killSpell(spell);
+        }
+    }
+
+    public void killSpell(int spellID){
+        killSpell(getSpell(spellID));
+    }
+
+    public void killSpell(BaseSpell spell){
+        if(spell != null) {
+            spell.kill();
+            int id = spell.getId();
+            activeSpells.remove(id);
+            for (BaseSpell childSpell : getChildSpells(id)) {
+                if (childSpell.isDaemon()) {
+                    childSpell.setAlive(false);
+                }
             }
         }
     }

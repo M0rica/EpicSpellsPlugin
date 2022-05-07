@@ -17,6 +17,7 @@
 package tabExecutors;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -49,11 +50,19 @@ public class SpellTabExecutor implements TabExecutor{
         if(args.length == 1){
             
             commands.add("cast");
+            commands.add("kill");
+            commands.add("terminate");
             StringUtil.copyPartialMatches(args[0], commands, completions);
         } else if(args.length == 2){
-            String[] spellNames = spellManager.getSpellNames();
-            for(String spellName: spellNames){
-                commands.add(spellName);
+            switch(args[0]){
+                case "cast":
+                    String[] spellNames = spellManager.getSpellNames();
+                    commands.addAll(Arrays.asList(spellNames));
+                    break;
+                case "kill": case "terminate":
+                    for(int id: spellManager.getActiveSpellIDs()){
+                        commands.add(String.valueOf(id));
+                    }
             }
             StringUtil.copyPartialMatches(args[1], commands, completions);
         }
@@ -63,7 +72,6 @@ public class SpellTabExecutor implements TabExecutor{
 
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String string, String[] strings) {
-        //return esp.onCommand(cs, cmd, string, strings);
-        return false;
+        return spellManager.onCommand(cs, cmd, string, strings);
     }
 }
