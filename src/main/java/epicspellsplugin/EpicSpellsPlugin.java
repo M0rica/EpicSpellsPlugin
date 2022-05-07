@@ -51,8 +51,8 @@ public class EpicSpellsPlugin extends JavaPlugin{
         PluginManager pluginManager = Bukkit.getPluginManager();
         pluginManager.registerEvents(new PlayerServerEventListener(this), this);
         TabExecutor spellTabExecutor = new SpellTabExecutor(this);
-        //this.getCommand("spell").setExecutor(tabExecutor);
         this.getCommand("spell").setTabCompleter(spellTabExecutor);
+        this.getCommand("spell").setExecutor(spellTabExecutor);
         TabExecutor mageTabExecutor = new MageTabExecutor(this);
         this.getCommand("mage").setTabCompleter(mageTabExecutor);
         this.getCommand("mage").setExecutor(mageTabExecutor);
@@ -70,13 +70,6 @@ public class EpicSpellsPlugin extends JavaPlugin{
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args){
         switch (cmd.getName()) {
-            case "spell":
-                if (args.length >= 1 && sender instanceof Player) {
-                    spellManager.castSpell(args[1], (Player) sender);
-                    return true;
-                } else {
-                    return false;
-                }
             case "addmage":
                 if (args.length == 1) {
                     mageManager.addPlayer(Bukkit.getPlayer(args[0]));
