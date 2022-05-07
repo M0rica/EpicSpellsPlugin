@@ -80,7 +80,7 @@ public class MageTabExecutor implements TabExecutor{
     }
 
     @Override
-    public boolean onCommand(CommandSender cs, Command cmd, String string, String[] args){
+    public boolean onCommand(CommandSender sender, Command cmd, String string, String[] args){
         if(args.length > 0) {
             Mage mage = mageManager.getMage(args[0]);
             if(mage != null) {
@@ -101,11 +101,11 @@ public class MageTabExecutor implements TabExecutor{
                                         break;
                                 }
                             } catch (NumberFormatException e){
-                                cs.sendMessage(String.format("Error: %s is not a number!", args[3]));
+                                sender.sendMessage(String.format("Error: %s is not a number!", args[3]));
                             }
                         } else if(args.length == 3){
                             if(args[2].equals("get")){
-                                cs.sendMessage(String.format("Mana of %s is %.2f", args[0], mage.getMana()));
+                                sender.sendMessage(String.format("Mana of %s is %.2f", args[0], mage.getMana()));
                             }
                         }
                         break;
@@ -117,11 +117,11 @@ public class MageTabExecutor implements TabExecutor{
                                     mage.setMaxMana(value);
                                 }
                             } catch (NumberFormatException e){
-                                cs.sendMessage(String.format("Error: %s is not a number!", args[3]));
+                                sender.sendMessage(String.format("Error: %s is not a number!", args[3]));
                             }
                         } else if(args.length == 3) {
                             if (args[2].equals("get")) {
-                                cs.sendMessage(String.format("Maximum Mana of %s is %.2f", args[0], mage.getMaxMana()));
+                                sender.sendMessage(String.format("Maximum Mana of %s is %.2f", args[0], mage.getMaxMana()));
                             }
                         }
                         break;
@@ -133,11 +133,11 @@ public class MageTabExecutor implements TabExecutor{
                                     mage.setManaRegeneration(value);
                                 }
                             } catch (NumberFormatException e){
-                                cs.sendMessage(String.format("Error: %s is not a number!", args[3]));
+                                sender.sendMessage(String.format("Error: %s is not a number!", args[3]));
                             }
                         } else if(args.length == 3) {
                             if (args[2].equals("get")) {
-                                cs.sendMessage(String.format("Mana regeneration rate of %s is %.2f", args[0], mage.getManaRegeneration()));
+                                sender.sendMessage(String.format("Mana regeneration rate of %s is %.2f", args[0], mage.getManaRegeneration()));
                             }
                         }
                         break;
