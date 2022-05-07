@@ -110,7 +110,10 @@ public class SpellManager {
         switch (args[0]) {
             case "cast":
                 if (args.length >= 2 && sender instanceof Player) {
-                    castSpell(args[1], (Player) sender);
+                    int spellID = castSpell(args[1], (Player) sender);
+                    if(spellID != -1) {
+                        sender.sendMessage(String.format("Cast spell %s with id %s", args[1], spellID));
+                    }
                     return true;
                 } else {
                     return false;
@@ -142,7 +145,7 @@ public class SpellManager {
         }
     }
     
-    public BaseSpell castSpell(String name, Player player){
+    public int castSpell(String name, Player player){
         SpellWrapper spellWrapper = getSpellWrapper(name);
         if(spellWrapper != null){
             Mage mage = mageManager.getMage(player);
@@ -151,22 +154,22 @@ public class SpellManager {
                     mage.canCastSpell(spellWrapper);
                 } catch (NotEnoughManaException e) {
                     player.sendMessage("Not enough Mana to cast spell");
-                    return null;
+                    return -1;
                 } catch (SpellCooldownException e) {
                     player.sendMessage("Spell has cooldown");
-                    return null;
+                    return -1;
                 }
                 BaseSpell spell = spellWrapper.getSpell();
                 mageManager.castSpell(mage, spellWrapper);
                 spawnSpell(spell, player, name, 0);
-                return spell;
+                return spell.getId();
             } else {
                 player.sendMessage("Your are not a mage");
-                return null;
+                return -1;
             }
         } else {
             player.sendMessage("No such spell");
-            return null;
+            return -1;
         }
     }
 
