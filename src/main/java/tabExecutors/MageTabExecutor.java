@@ -23,7 +23,6 @@ import java.util.List;
 import epicspellsplugin.EpicSpellsPlugin;
 import epicspellsplugin.Mage;
 import epicspellsplugin.MageManager;
-import epicspellsplugin.SpellManager;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
