@@ -18,7 +18,7 @@ public class RealisticExplosion {
         Location blocklocation = location.getBlock().getLocation();
         List<Block> removedBlocks = new ArrayList<>();
         List<Material> removedBlocksMaterials = new ArrayList<>();
-        int rays = (int)Math.pow(power*7, 2);
+        int rays = (int)(Math.pow(power*7, 2));
         for(int i=0; i<rays; i++) {
             Random r = new Random();
             double x = r.nextGaussian();
@@ -36,7 +36,7 @@ public class RealisticExplosion {
                 Material material = hitBlock.getType();
                 if(!material.isAir()){
                     float blastResistance = material.getBlastResistance();
-                    if(blastResistance < power*10){
+                    if(blastResistance < power*20){
                         //boolean removeBlock = Utils.randomFloat(0, power) > blastResistance/(power*10);
                         //if(removeBlock){
                         hitBlock.setType(Material.AIR);
