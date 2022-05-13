@@ -146,8 +146,9 @@ public class MageTabExecutor implements TabExecutor{
                         }
                         break;
                 }
+            } else {
+                sender.sendMessage(String.format("Player %s is not a Mage!", args[0]));
             }
-            sender.sendMessage(String.format("Player %s is not a Mage!", args[0]));
             return true;
         }
         return false;
