@@ -73,28 +73,50 @@ public class EpicSpellsPlugin extends JavaPlugin{
             case "addmage":
                 if (args.length == 1) {
                     if(sender.isOp()) {
-                        mageManager.addPlayer(Bukkit.getPlayer(args[0]));
-                        sender.sendMessage("You are now a Mage");
+                        Player player = Bukkit.getPlayer(args[0]);
+                        if(player != null) {
+                            if(mageManager.getMage(player) == null) {
+                                mageManager.addPlayer(player);
+                                sender.sendMessage(String.format("%s is now a Mage", player.getDisplayName()));
+                                player.sendMessage(String.format("%s made you a Mage", sender.getName()));
+                            } else {
+                                sender.sendMessage(String.format("%s is already a Mage!", player.getDisplayName()));
+                            }
+                        } else {
+                            sender.sendMessage(String.format("No player named %s", args[0]));
+                        }
                     } else {
                         sender.sendMessage("You don't have permissions to run this command!");
                     }
                 } else {
                     if (sender instanceof Player) {
                         mageManager.addPlayer((Player) sender);
+                        sender.sendMessage("You are now a Mage");
                     }
                 }
                 return true;
             case "removemage":
                 if (args.length == 1) {
                     if(sender.isOp()) {
-                        mageManager.removePlayer(Bukkit.getPlayer(args[0]));
-                        sender.sendMessage("You are no longer a Mage");
+                        Player player = Bukkit.getPlayer(args[0]);
+                        if(player != null) {
+                            if(mageManager.getMage(player) != null) {
+                                mageManager.removePlayer(player);
+                                sender.sendMessage(String.format("%s is no longer a Mage", player.getDisplayName()));
+                                player.sendMessage(String.format("%s removed you from being a Mage", sender.getName()));
+                            } else {
+                                sender.sendMessage(String.format("%s is not a Mage!", player.getDisplayName()));
+                            }
+                        } else {
+                            sender.sendMessage(String.format("No player named %s", args[0]));
+                        }
                     } else {
                         sender.sendMessage("You don't have permissions to run this command!");
                     }
                 } else {
                     if (sender instanceof Player) {
                         mageManager.removePlayer((Player) sender);
+                        sender.sendMessage("You are no longer a Mage");
                     }
                 }
                 return true;
