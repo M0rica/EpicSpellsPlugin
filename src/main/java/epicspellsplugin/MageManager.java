@@ -16,7 +16,10 @@
  */
 package epicspellsplugin;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+
 import org.bukkit.entity.Player;
 
 /**
@@ -34,6 +37,19 @@ public class MageManager {
     public Mage getMage(Player player){
         return players.get(player);
     }
+
+    public Mage getMage(String name){
+        for(Player player: players.keySet()){
+            if(player.getDisplayName().equals(name)){
+                return players.get(player);
+            }
+        }
+        return null;
+    }
+
+    public List<Mage> getMages(){
+        return new ArrayList<>(players.values());
+    }
     
     public void tick(){
         for(Mage mage: players.values()){
@@ -42,8 +58,8 @@ public class MageManager {
     }
 
     public void castSpell(Mage mage, SpellWrapper spellWrapper){
-        removeMana(mage, spellWrapper.getManaCost());
-        addCooldown(mage, spellWrapper.getSpellName(), spellWrapper.getCooldown());
+        mage.removeMana(spellWrapper.getManaCost());
+        mage.addCooldown(spellWrapper.getSpellName(), spellWrapper.getCooldown());
     }
     
     public void addPlayer(Player player){
@@ -54,13 +70,5 @@ public class MageManager {
     
     public void removePlayer(Player player){
         players.remove(player);
-    }
-
-    public void removeMana(Mage mage, int amount){
-        mage.updateMana(-amount);
-    }
-    
-    public void addCooldown(Mage mage, String spellName, int cooldown){
-        mage.addCooldown(spellName, cooldown);
     }
 }

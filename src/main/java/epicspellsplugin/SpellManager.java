@@ -64,7 +64,7 @@ public class SpellManager {
         registerSpell(wraper);
         wraper = new SpellWrapper("PowerStrike", new PowerStrike(), 150, 150);
         registerSpell(wraper);
-        wraper = new SpellWrapper("Explosion", new Explosion(), 900, 100);
+        wraper = new SpellWrapper("Explosion", new Explosion(), 100, 100);
         registerSpell(wraper);
         wraper = new SpellWrapper("ArrowStorm", new ArrowStorm(), 150, 100);
         registerSpell(wraper);
@@ -83,6 +83,14 @@ public class SpellManager {
         Set<String> set = spells.keySet();
         return set.toArray(new String[set.size()]);
     }
+
+    public Integer[] getActiveSpellIDs(){
+        return activeSpells.keySet().toArray(new Integer[0]);
+    }
+
+    public BaseSpell getSpell(int spellID){
+        return activeSpells.get(spellID);
+    }
     
     private SpellWrapper getSpellWrapper(String name){
         return spells.get(name);
@@ -96,26 +104,31 @@ public class SpellManager {
         return children.toArray(new BaseSpell[children.size()]);
     }
     
-    public BaseSpell castSpell(String name, Player player){
+    public int castSpell(String name, Player player){
         SpellWrapper spellWrapper = getSpellWrapper(name);
         if(spellWrapper != null){
             Mage mage = mageManager.getMage(player);
-            try{
-                mage.canCastSpell(spellWrapper);
-            } catch(NotEnoughManaException e){
-                player.sendMessage("Not enough Mana to cast spell");
-                return null;
-            } catch(SpellCooldownException e){
-                player.sendMessage("Spell has cooldown");
-                return null;
+            if(mage != null) {
+                try {
+                    mage.canCastSpell(spellWrapper);
+                } catch (NotEnoughManaException e) {
+                    player.sendMessage("Not enough Mana to cast spell");
+                    return -1;
+                } catch (SpellCooldownException e) {
+                    player.sendMessage("Spell has cooldown");
+                    return -1;
+                }
+                BaseSpell spell = spellWrapper.getSpell();
+                mageManager.castSpell(mage, spellWrapper);
+                spawnSpell(spell, player, name, 0);
+                return spell.getId();
+            } else {
+                player.sendMessage("Your are not a mage");
+                return -1;
             }
-            BaseSpell spell = spellWrapper.getSpell();
-            mageManager.castSpell(mage, spellWrapper);
-            spawnSpell(spell, player, name, 0);
-            return spell;
         } else {
             player.sendMessage("No such spell");
-            return null;
+            return -1;
         }
     }
 
@@ -194,18 +207,35 @@ public class SpellManager {
            }
        } 
     }
+
+    public void terminateSpell(int spellID){
+        terminateSpell(getSpell(spellID));
+    }
     
     public void terminateSpell(BaseSpell spell){
         terminateSpell(spell, spell.getPosition());
     }
     
     public void terminateSpell(BaseSpell spell, Location location){
-        int id = spell.getId();
-        activeSpells.remove(id);
-        spell.terminate(location);
-        for(BaseSpell childSpell: getChildSpells(id)){
-            if(childSpell.isDaemon()){
-                 childSpell.setAlive(false);
+        if(spell != null) {
+            spell.terminate(location);
+            killSpell(spell);
+        }
+    }
+
+    public void killSpell(int spellID){
+        killSpell(getSpell(spellID));
+    }
+
+    public void killSpell(BaseSpell spell){
+        if(spell != null) {
+            spell.kill();
+            int id = spell.getId();
+            activeSpells.remove(id);
+            for (BaseSpell childSpell : getChildSpells(id)) {
+                if (childSpell.isDaemon()) {
+                    childSpell.setAlive(false);
+                }
             }
         }
     }

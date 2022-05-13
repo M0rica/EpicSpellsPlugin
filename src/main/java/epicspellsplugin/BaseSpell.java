@@ -50,37 +50,37 @@ public class BaseSpell extends Spell implements SpellInteraction{
 
     @Override
     public void on_entity_hit(Location location, Entity entity) {
-        throw new UnsupportedOperationException("Not supported yet.");
+
     }
 
     @Override
     public void on_player_hit(Location location, Player player) {
-        throw new UnsupportedOperationException("Not supported yet.");
+
     }
 
     @Override
     public void on_block_hit(Location location, Block block, int wallThickness) {
-        throw new UnsupportedOperationException("Not supported yet.");
+
     }
 
     @Override
     public void on_out_of_range() {
-        throw new UnsupportedOperationException("Not supported yet.");
+
     }
 
     @Override
     public void on_lifetime_end() {
-        throw new UnsupportedOperationException("Not supported yet.");
+
     }
 
     @Override
     public void terminate(Location location) {
-        throw new UnsupportedOperationException("Not supported yet.");
+
     }
 
     @Override
     public void kill() {
-        throw new UnsupportedOperationException("Not supported yet.");
+
     }
     
 }

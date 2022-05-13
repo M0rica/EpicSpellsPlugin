@@ -26,6 +26,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitScheduler;
+import tabExecutors.MageTabExecutor;
+import tabExecutors.SpellTabExecutor;
 
 /**
  *
@@ -48,9 +50,12 @@ public class EpicSpellsPlugin extends JavaPlugin{
         scheduler = Bukkit.getScheduler();
         PluginManager pluginManager = Bukkit.getPluginManager();
         pluginManager.registerEvents(new PlayerServerEventListener(this), this);
-        TabExecutor tabExecutor = new SpellTabExecutor(this);
-        this.getCommand("spell").setExecutor(tabExecutor);
-        this.getCommand("spell").setTabCompleter(tabExecutor);
+        TabExecutor spellTabExecutor = new SpellTabExecutor(this);
+        this.getCommand("spell").setTabCompleter(spellTabExecutor);
+        this.getCommand("spell").setExecutor(spellTabExecutor);
+        TabExecutor mageTabExecutor = new MageTabExecutor(this);
+        this.getCommand("mage").setTabCompleter(mageTabExecutor);
+        this.getCommand("mage").setExecutor(mageTabExecutor);
         
         spellManager.setup();
         setup();
@@ -64,12 +69,37 @@ public class EpicSpellsPlugin extends JavaPlugin{
     
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args){
-        if(args.length >= 1 && sender instanceof Player){
-            spellManager.castSpell(args[1], (Player) sender);
-            return true;
-        } else {
-            return false;
+        switch (cmd.getName()) {
+            case "addmage":
+                if (args.length == 1) {
+                    if(sender.isOp()) {
+                        mageManager.addPlayer(Bukkit.getPlayer(args[0]));
+                        sender.sendMessage("You are now a Mage");
+                    } else {
+                        sender.sendMessage("You don't have permissions to run this command!");
+                    }
+                } else {
+                    if (sender instanceof Player) {
+                        mageManager.addPlayer((Player) sender);
+                    }
+                }
+                return true;
+            case "removemage":
+                if (args.length == 1) {
+                    if(sender.isOp()) {
+                        mageManager.removePlayer(Bukkit.getPlayer(args[0]));
+                        sender.sendMessage("You are no longer a Mage");
+                    } else {
+                        sender.sendMessage("You don't have permissions to run this command!");
+                    }
+                } else {
+                    if (sender instanceof Player) {
+                        mageManager.removePlayer((Player) sender);
+                    }
+                }
+                return true;
         }
+        return false;
     }
     
     public SpellManager getSpellManager(){
