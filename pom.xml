@@ -6,7 +6,7 @@
 
     <groupId>org.example</groupId>
     <artifactId>EpicSpellsPlugin</artifactId>
-    <version>0.1-dev.2</version>
+    <version>0.1-dev.3</version>
 
     <properties>
         <maven.compiler.source>14</maven.compiler.source>
