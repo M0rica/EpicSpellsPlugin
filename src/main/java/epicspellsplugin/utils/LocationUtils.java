@@ -74,4 +74,10 @@ public class LocationUtils {
         Vector relativePosition = new Vector(x, y, z).normalize();
         return location.clone().add(relativePosition.multiply(Utils.randomDouble(0, radius)));
     }
+
+    public static Location projectPointOnPlane(Location planePoint, Vector normal, Location point){
+        double distance = point.clone().subtract(planePoint).toVector().dot(normal);
+        Location projectedPoint = point.clone().subtract(normal.clone().multiply(distance));
+        return projectedPoint;
+    }
 }
