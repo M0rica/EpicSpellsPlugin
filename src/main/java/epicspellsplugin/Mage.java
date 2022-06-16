@@ -134,13 +134,20 @@ public class Mage {
                     castingPoints.set(i, point);
                 }
                 double angle = Math.acos(castingPlaneNormal.dot(new Vector(0, 0, 1))/castingPlaneNormal.length());
-                angle = angle > Math.PI/2 ? angle - Math.PI: angle;
+                boolean mirror = false;
+                if(angle > Math.PI/2){
+                    angle -= Math.PI;
+                    mirror = true;
+                }
                 System.out.println("Angle " + angle);
                 Vector axis = castingPlaneNormal.clone().crossProduct(new Vector(0, 0, 1)).normalize();
                 for(int i = 1; i < castingPoints.size(); i++){
                     Vector temp = castingPoints.get(i).clone().toVector().subtract(castingPoints.get(0).toVector());
                     temp.rotateAroundAxis(axis, angle);
                     temp.setZ(0);
+                    if(mirror){
+                        temp.rotateAroundY(Math.PI);
+                    }
                     Location loc = direction.clone().add(temp);
                     transformedLocations.add(loc);
                     new DirectionalParticle(player.getWorld(), Particle.DRAGON_BREATH, loc, new Vector(), 0);
