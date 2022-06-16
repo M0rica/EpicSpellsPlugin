@@ -115,9 +115,11 @@ public class Mage {
         if(item.getType() == Material.STICK && item.getItemMeta().getDisplayName().equals("Magic Wand")){
             if(player.isSneaking()){
                 Location point = player.getEyeLocation().add(player.getEyeLocation().getDirection().normalize().multiply(3));
-                // TODO calculate point between this and last point to have more points for more accuracy
                 if(isCasting()) {
-                    if(point.distance(castingPoints.get(castingPoints.size() - 1)) > 0.02){
+                    Location lastPoint = castingPoints.get(castingPoints.size() - 1);
+                    if(point.distance(lastPoint)> 0.1){
+                        Location between = lastPoint.clone().add(point).multiply(0.5);
+                        castingPoints.add(between);
                         castingPoints.add(point);
                     }
                 } else {
@@ -126,12 +128,14 @@ public class Mage {
                 }
             } else if(isCasting()){
                 List<Location> transformedLocations = new ArrayList<>();
-                Location direction = player.getEyeLocation().add(player.getEyeLocation().getDirection().normalize().multiply(3));
+                Location direction = player.getEyeLocation().add(player.getEyeLocation().getDirection().normalize().multiply(2));
                 for(int i = 1; i < castingPoints.size(); i++){
                     Location point = LocationUtils.projectPointOnPlane(castingPoints.get(0), castingPlaneNormal, castingPoints.get(i));
                     castingPoints.set(i, point);
                 }
                 double angle = Math.acos(castingPlaneNormal.dot(new Vector(0, 0, 1))/castingPlaneNormal.length());
+                angle = angle > Math.PI/2 ? angle - Math.PI: angle;
+                System.out.println("Angle " + angle);
                 Vector axis = castingPlaneNormal.clone().crossProduct(new Vector(0, 0, 1)).normalize();
                 for(int i = 1; i < castingPoints.size(); i++){
                     Vector temp = castingPoints.get(i).clone().toVector().subtract(castingPoints.get(0).toVector());
@@ -141,28 +145,39 @@ public class Mage {
                     transformedLocations.add(loc);
                     new DirectionalParticle(player.getWorld(), Particle.DRAGON_BREATH, loc, new Vector(), 0);
                 }
+                int minSequenceSize = 4;
                 List<int[]> filteredTempList = new ArrayList<>();
                 List<int[]> filteredList = new ArrayList<>();
                 System.out.println("============");
                 for(int i = 1; i < transformedLocations.size(); i++){
                     Vector temp = transformedLocations.get(i).clone().toVector().subtract(transformedLocations.get(i-1).clone().toVector()).normalize();
                     List<Double> values = Arrays.asList(temp.getX(), temp.getY());
-                    int[] indexes = new int[]{(int)Math.round(values.get(0)), (int)Math.round(values.get(1))};
+                    int[] indexes = new int[2];
+                    for(int j = 0; j < indexes.length; j++){
+                        double value = values.get(j);
+                        double index;
+                        if(value > 0){
+                            index = Math.floor(value+0.7);
+                        } else {
+                            index = Math.ceil(value-0.7);
+                        }
+                        indexes[j] = (int) Math.round(index);
+                    }
                     if(filteredTempList.isEmpty() || Arrays.equals(filteredTempList.get(0), indexes)){
                         if(!filteredList.isEmpty() && Arrays.equals(filteredList.get(filteredList.size()-1), indexes)){
                             continue;
                         }
                         filteredTempList.add(indexes);
                     } else {
-                        if(filteredTempList.size() >= 3){
+                        if(filteredTempList.size() >= minSequenceSize){
                             filteredList.add(filteredTempList.get(0));
                         }
                         filteredTempList.clear();
+                        filteredTempList.add(indexes);
                     }
                     System.out.println(Arrays.toString(indexes));
                 }
-                if(filteredTempList.size() >= 3){
-                    System.out.println("Add");
+                if(filteredTempList.size() >= minSequenceSize){
                     filteredList.add(filteredTempList.get(0));
                 }
                 System.out.println("============");
