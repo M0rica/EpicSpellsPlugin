@@ -28,6 +28,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitScheduler;
 import tabExecutors.MageTabExecutor;
 import tabExecutors.SpellTabExecutor;
+import epicspellsplugin.spellcasting.Spellcaster;
 
 /**
  *
@@ -39,6 +40,7 @@ public class EpicSpellsPlugin extends JavaPlugin{
     private BukkitScheduler scheduler;
     private SpellManager spellManager;
     private MageManager mageManager;
+    private Spellcaster spellcaster;
     
     @Override
     public void onEnable(){
@@ -46,6 +48,7 @@ public class EpicSpellsPlugin extends JavaPlugin{
         
         mageManager = new MageManager();
         spellManager = new SpellManager(log, mageManager);
+        spellcaster = new Spellcaster(spellManager, mageManager);
         
         scheduler = Bukkit.getScheduler();
         PluginManager pluginManager = Bukkit.getPluginManager();
@@ -141,6 +144,7 @@ public class EpicSpellsPlugin extends JavaPlugin{
             public void run() {
                 mageManager.tick();
                 spellManager.tick();
+                spellcaster.tick();
             }
         }, 1, 1);
     }
