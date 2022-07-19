@@ -48,7 +48,7 @@ public class EpicSpellsPlugin extends JavaPlugin{
         
         mageManager = new MageManager();
         spellManager = new SpellManager(log, mageManager);
-        spellcaster = new Spellcaster(spellManager, mageManager);
+        spellcaster = new Spellcaster(spellManager, mageManager, log);
         
         scheduler = Bukkit.getScheduler();
         PluginManager pluginManager = Bukkit.getPluginManager();

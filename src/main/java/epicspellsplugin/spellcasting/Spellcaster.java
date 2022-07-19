@@ -13,21 +13,24 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
 
 import java.util.*;
+import java.util.logging.Logger;
 
 public class Spellcaster {
 
+    private Logger log;
     private SpellManager spellManager;
     private MageManager mageManager;
     private Map<Mage, SpellcastPatternRecord> castingMap;
     private Map<Mage, SpellcastPatternMapping> patternMappings;
     private Map<Mage, String> pendingSpellBinding;
 
-    public Spellcaster(SpellManager spellManager, MageManager mageManager){
+    public Spellcaster(SpellManager spellManager, MageManager mageManager, Logger log){
         this.spellManager = spellManager;
         this.mageManager = mageManager;
         castingMap = new HashMap<>();
         patternMappings = new HashMap<>();
         pendingSpellBinding = new HashMap<>();
+        this.log = log;
     }
 
     public void tick(){
@@ -147,6 +150,7 @@ public class Spellcaster {
                         SpellcastPatternMapping patternMapping = patternMappings.get(mage);
                         String spellName = patternMapping.mapPattern(lines);
                         if (spellName != null) {
+                            log.info(String.format("Triggering spell %s", spellName));
                             spellManager.castSpell(spellName, player);
                         }
                     }

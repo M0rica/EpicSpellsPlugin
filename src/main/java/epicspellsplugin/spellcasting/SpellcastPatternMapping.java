@@ -31,22 +31,21 @@ public class SpellcastPatternMapping {
     public String mapPattern(List<Integer> pattern){
         List<Integer> extendedPattern = new ArrayList<>(pattern);
         extendedPattern.addAll(pattern);
-        for(List<Integer> temp: patternMap.keySet()){
+        for(List<Integer> temp: patternMap.keySet()) {
             boolean same = false;
-            if(!Utils.arraysEqual(pattern.toArray(new Integer[]{}), temp.toArray(new Integer[]{}))){
+            if (!Utils.arraysEqual(pattern.toArray(new Integer[]{}), temp.toArray(new Integer[]{}))) {
                 continue;
             }
-            for(int i = 0; i < extendedPattern.size(); i++){
-                for(int j = 0; j < temp.size(); j++){
-                    if((i+j) < extendedPattern.size()){
-                        if(extendedPattern.get(i+j) == temp.get(j)){
-                            same = true;
-                        } else {
-                            same = false;
+            for (int i = 0; i < temp.size(); i++) {
+                for (int j = 0; j < temp.size(); j++) {
+                    if ((i + j) <= extendedPattern.size()) {
+                        same = extendedPattern.get(i + j).equals(temp.get(j));
+                        if(!same){
+                            break;
                         }
                     }
                 }
-                if(same){
+                if (same) {
                     return patternMap.get(temp);
                 }
             }
