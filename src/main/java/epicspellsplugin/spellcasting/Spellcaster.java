@@ -18,7 +18,7 @@ public class Spellcaster {
 
     private SpellManager spellManager;
     private MageManager mageManager;
-    private Map<Mage, Spellcast> castingMap;
+    private Map<Mage, SpellcastPatternRecord> castingMap;
     private Map<Mage, SpellcastPatternMapping> patternMappings;
 
     public Spellcaster(SpellManager spellManager, MageManager mageManager){
@@ -41,30 +41,30 @@ public class Spellcaster {
                 if(player.isSneaking()){
                     Location point = player.getEyeLocation().add(player.getEyeLocation().getDirection().normalize().multiply(3));
                     if(isCasting(mage)) {
-                        Spellcast spellcast = getSpellcast(mage);
-                        List<Location> castingPoints = spellcast.getCastingPoints();
+                        SpellcastPatternRecord spellcastPatternRecord = getSpellcastPatternRecord(mage);
+                        List<Location> castingPoints = spellcastPatternRecord.getCastingPoints();
                         if(castingPoints.size() > 0) {
                             Location lastPoint = castingPoints.get(castingPoints.size() - 1);
                             if (point.distance(lastPoint) > 0.1) {
                                 Location between = lastPoint.clone().add(point).multiply(0.5);
-                                spellcast.addCastingPoint(between);
-                                spellcast.addCastingPoint(point);
+                                spellcastPatternRecord.addCastingPoint(between);
+                                spellcastPatternRecord.addCastingPoint(point);
                             }
                             for (Location loc : castingPoints) {
                                 new DirectionalParticle(player.getWorld(), Particle.ELECTRIC_SPARK, loc, new Vector(), 0);
                             }
                         } else {
-                            spellcast.addCastingPoint(point);
+                            spellcastPatternRecord.addCastingPoint(point);
                         }
                     } else {
                         Vector normalizedPlane = player.getEyeLocation().getDirection().normalize().multiply(-1);
-                        Spellcast spellcast = new Spellcast(normalizedPlane);
-                        castingMap.put(mage, spellcast);
+                        SpellcastPatternRecord spellcastPatternRecord = new SpellcastPatternRecord(normalizedPlane);
+                        castingMap.put(mage, spellcastPatternRecord);
                     }
                 } else if(isCasting(mage)){
-                    Spellcast spellcast = getSpellcast(mage);
-                    List<Location> castingPoints = spellcast.getCastingPoints();
-                    Vector castingNormalPlane = spellcast.getNormalPlane();
+                    SpellcastPatternRecord spellcastPatternRecord = getSpellcastPatternRecord(mage);
+                    List<Location> castingPoints = spellcastPatternRecord.getCastingPoints();
+                    Vector castingNormalPlane = spellcastPatternRecord.getNormalPlane();
                     List<Location> transformedLocations = new ArrayList<>();
                     Location direction = player.getEyeLocation().add(player.getEyeLocation().getDirection().normalize().multiply(2));
                     for(int i = 1; i < castingPoints.size(); i++){
@@ -150,7 +150,7 @@ public class Spellcaster {
         }
     }
 
-    public Spellcast getSpellcast(Mage mage){
+    public SpellcastPatternRecord getSpellcastPatternRecord(Mage mage){
         return castingMap.get(mage);
     }
 

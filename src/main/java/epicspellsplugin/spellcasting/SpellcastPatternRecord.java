@@ -6,12 +6,12 @@ import org.bukkit.util.Vector;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Spellcast {
+public class SpellcastPatternRecord {
 
     private Vector normalPlane;
     private List<Location> castingPoints;
 
-    public Spellcast(Vector normalPlane){
+    public SpellcastPatternRecord(Vector normalPlane){
         this.normalPlane = normalPlane;
         castingPoints = new ArrayList<>();
     }
