@@ -9,10 +9,10 @@ public class SpellcastPatternMapping {
     public static SpellcastPatternMapping DEFAULT;
     static {
         DEFAULT = new SpellcastPatternMapping();
-        DEFAULT.setSpellPattern(Arrays.asList(8, 1, 6), "Fireball");
-        DEFAULT.setSpellPattern(Arrays.asList(5, 0, 7, 0), "PowerStrike");
-        DEFAULT.setSpellPattern(Arrays.asList(5, 6, 1, 8), "ArrowStorm");
-        DEFAULT.setSpellPattern(Arrays.asList(8, 2, 3), "Explosion");
+        DEFAULT.bindPattern(Arrays.asList(8, 1, 6), "Fireball");
+        DEFAULT.bindPattern(Arrays.asList(5, 0, 7, 0), "PowerStrike");
+        DEFAULT.bindPattern(Arrays.asList(5, 6, 1, 8), "ArrowStorm");
+        DEFAULT.bindPattern(Arrays.asList(8, 2, 3), "Explosion");
     }
     private Map<List<Integer>, String> patternMap;
 
@@ -20,8 +20,12 @@ public class SpellcastPatternMapping {
         patternMap = new HashMap<>();
     }
 
-    public void setSpellPattern(List<Integer> pattern, String spellName){
+    public void bindPattern(List<Integer> pattern, String spellName){
         patternMap.put(pattern, spellName);
+    }
+
+    public void unbindPattern(List<Integer> pattern){
+        patternMap.remove(pattern);
     }
 
     public String mapPattern(List<Integer> pattern){
@@ -49,7 +53,4 @@ public class SpellcastPatternMapping {
         }
         return null;
     }
-
-
-
 }

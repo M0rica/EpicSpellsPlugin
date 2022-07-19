@@ -20,12 +20,14 @@ public class Spellcaster {
     private MageManager mageManager;
     private Map<Mage, SpellcastPatternRecord> castingMap;
     private Map<Mage, SpellcastPatternMapping> patternMappings;
+    private Map<Mage, String> pendingSpellBinding;
 
     public Spellcaster(SpellManager spellManager, MageManager mageManager){
         this.spellManager = spellManager;
         this.mageManager = mageManager;
         castingMap = new HashMap<>();
         patternMappings = new HashMap<>();
+        pendingSpellBinding = new HashMap<>();
     }
 
     public void tick(){
@@ -139,15 +141,51 @@ public class Spellcaster {
                         }
                     }
                     System.out.println(Arrays.toString(lines.toArray()));
-                    SpellcastPatternMapping patternMapping = patternMappings.get(mage);
-                    String spellName = patternMapping.mapPattern(lines);
-                    if(spellName != null) {
-                        spellManager.castSpell(spellName, player);
+                    if(isSpellBinding(mage)){
+                        completeSpellBinding(mage, lines);
+                    } else {
+                        SpellcastPatternMapping patternMapping = patternMappings.get(mage);
+                        String spellName = patternMapping.mapPattern(lines);
+                        if (spellName != null) {
+                            spellManager.castSpell(spellName, player);
+                        }
                     }
                     castingMap.remove(mage);
                 }
             }
         }
+    }
+
+    public void setupSpellBinding(Mage mage, String spellName){
+        Player player = mage.getPlayer();
+        if(spellManager.getSpellNames().contains(spellName)){
+            if(isSpellBinding(mage)){
+                player.sendMessage(String.format("You are already binding a spell (%s)!", pendingSpellBinding.get(mage)));
+            } else {
+                pendingSpellBinding.put(mage, spellName);
+                player.sendMessage(String.format("Please draw the shape you want to bind %s to using your magic wand", spellName));
+            }
+        } else {
+            player.sendMessage("No such spell");
+        }
+    }
+
+    private void completeSpellBinding(Mage mage, List<Integer> pattern){
+        Player player = mage.getPlayer();
+        SpellcastPatternMapping patternMapping = patternMappings.get(mage);
+        String spellName = patternMapping.mapPattern(pattern);
+        if(spellName != null){
+            patternMapping.unbindPattern(pattern);
+            player.sendMessage(String.format("You already have a spell mapped to this pattern (%s), this binding will be overwritten", spellName));
+        }
+        spellName = pendingSpellBinding.get(mage);
+        patternMapping.bindPattern(pattern, spellName);
+        pendingSpellBinding.remove(mage);
+        player.sendMessage(String.format("Successfully bound spell %s to the pattern you just drew!", spellName));
+    }
+
+    private boolean isSpellBinding(Mage mage){
+        return pendingSpellBinding.containsKey(mage);
     }
 
     public SpellcastPatternRecord getSpellcastPatternRecord(Mage mage){

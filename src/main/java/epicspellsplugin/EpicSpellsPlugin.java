@@ -134,7 +134,9 @@ public class EpicSpellsPlugin extends JavaPlugin{
     public MageManager getMageManager(){
         return mageManager;
     }
-    
+
+    public Spellcaster getSpellcaster() { return spellcaster; }
+
     public void setup(){
         for(Player player: Bukkit.getOnlinePlayers()){
             mageManager.addPlayer(player);
