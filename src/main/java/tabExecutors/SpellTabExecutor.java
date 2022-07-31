@@ -21,9 +21,8 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import epicspellsplugin.BaseSpell;
-import epicspellsplugin.EpicSpellsPlugin;
-import epicspellsplugin.SpellManager;
+import epicspellsplugin.*;
+import epicspellsplugin.spellcasting.Spellcaster;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
@@ -38,10 +37,14 @@ public class SpellTabExecutor implements TabExecutor{
 
     private EpicSpellsPlugin esp;
     private SpellManager spellManager;
+    private MageManager mageManager;
+    private Spellcaster spellcaster;
     
     public SpellTabExecutor(EpicSpellsPlugin esp){
         this.esp = esp;
         spellManager = esp.getSpellManager();
+        mageManager = esp.getMageManager();
+        spellcaster = esp.getSpellcaster();
     }
     
     @Override
@@ -54,12 +57,13 @@ public class SpellTabExecutor implements TabExecutor{
             commands.add("cast");
             commands.add("kill");
             commands.add("terminate");
+            commands.add("bind");
             StringUtil.copyPartialMatches(args[0], commands, completions);
         } else if(args.length == 2){
             switch(args[0]){
-                case "cast":
-                    String[] spellNames = spellManager.getSpellNames();
-                    commands.addAll(Arrays.asList(spellNames));
+                case "cast": case "bind":
+                    List<String> spellNames = spellManager.getSpellNames();
+                    commands.addAll(spellNames);
                     break;
                 case "kill": case "terminate":
                     for(int id: spellManager.getActiveSpellIDs()){
@@ -85,11 +89,24 @@ public class SpellTabExecutor implements TabExecutor{
                 } else {
                     return false;
                 }
+            case "bind":
+                if(args.length == 2 && sender instanceof Player){
+                    Player player = (Player) sender;
+                    Mage mage = mageManager.getMage(player);
+                    if(mage != null){
+                        spellcaster.setupSpellBinding(mage, args[1]);
+                    } else {
+                        player.sendMessage("Your are not a mage");
+                    }
+                    return true;
+                } else {
+                    return false;
+                }
             case "terminate": case "kill":
                 if(args.length >= 2){
                     String action = args[0];
                     try {
-                        int spellID = Integer.valueOf(args[1]);
+                        int spellID = Integer.parseInt(args[1]);
                         if(Arrays.stream(spellManager.getActiveSpellIDs()).anyMatch(x -> x==spellID)){
                             BaseSpell spell = spellManager.getSpell(spellID);
                             if(action.equals("terminate")){

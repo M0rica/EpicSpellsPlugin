@@ -16,7 +16,7 @@
  */
 package epicspellsplugin;
 
-import java.util.HashMap;
+import java.util.*;
 
 import epicspellsplugin.exceptions.NotEnoughManaException;
 import epicspellsplugin.exceptions.SpellCooldownException;

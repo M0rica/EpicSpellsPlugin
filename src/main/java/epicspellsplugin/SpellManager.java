@@ -22,10 +22,8 @@ import epicspellsplugin.spells.ArrowStorm;
 import epicspellsplugin.spells.Explosion;
 import epicspellsplugin.spells.Fireball;
 import epicspellsplugin.spells.PowerStrike;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Set;
+
+import java.util.*;
 import java.util.logging.Logger;
 import org.bukkit.FluidCollisionMode;
 import org.bukkit.Location;
@@ -75,13 +73,13 @@ public class SpellManager {
         if(!spells.containsKey(spellName)){
             spells.put(spellName, wrapper);
         } else {
-            log.warning(String.format("Faild to register spell %s as there already is one with the same name!", spellName));
+            log.warning(String.format("Failed to register spell %s as there already is one with the same name!", spellName));
         }
     }
     
-    public String[] getSpellNames(){
+    public List<String> getSpellNames(){
         Set<String> set = spells.keySet();
-        return set.toArray(new String[set.size()]);
+        return new ArrayList<>(set);
     }
 
     public Integer[] getActiveSpellIDs(){
