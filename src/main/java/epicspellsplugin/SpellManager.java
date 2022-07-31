@@ -141,7 +141,8 @@ public class SpellManager {
     }
     
     public void tick(){
-       for(int id: activeSpells.keySet()){
+        Map<Integer, BaseSpell> temp = (HashMap) activeSpells.clone();
+        for(int id: temp.keySet()){
            BaseSpell spell = activeSpells.get(id);
            if(spell.isAlive()){
                World world = spell.getWorld();
