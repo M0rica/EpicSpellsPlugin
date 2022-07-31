@@ -42,8 +42,8 @@ public class Spellcaster {
 
             Player player = mage.getPlayer();
             ItemStack item = player.getInventory().getItemInMainHand();
-            // check if player is holding a wand
-            if(item.getType() == Material.STICK && item.getItemMeta().getDisplayName().equals("Magic Wand")){
+            // check if player is holding a wand and not flying
+            if(!player.isFlying() && item.getType() == Material.STICK && item.getItemMeta().getDisplayName().equals("Magic Wand")){
                 // if player is sneaking, he is casting
                 if(player.isSneaking()){
                     // create point in front of the player
