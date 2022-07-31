@@ -116,6 +116,8 @@ public class Spellcaster {
                     }
                     castingMap.remove(mage);
                 }
+            } else {
+                castingMap.remove(mage);
             }
         }
     }
