@@ -6,7 +6,7 @@
 
     <groupId>org.example</groupId>
     <artifactId>EpicSpellsPlugin</artifactId>
-    <version>0.1-dev.3</version>
+    <version>0.1-dev.4</version>
 
     <properties>
         <maven.compiler.source>14</maven.compiler.source>
@@ -26,7 +26,7 @@
         <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot-api</artifactId>
-            <version>1.18.2-R0.1-SNAPSHOT</version>
+            <version>1.19-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
 
