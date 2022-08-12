@@ -26,8 +26,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitScheduler;
-import tabExecutors.MageTabExecutor;
-import tabExecutors.SpellTabExecutor;
+import epicspellsplugin.tabExecutors.MageTabExecutor;
+import epicspellsplugin.tabExecutors.SpellTabExecutor;
 import epicspellsplugin.spellcasting.Spellcaster;
 
 /**
