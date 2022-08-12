@@ -51,7 +51,7 @@ public class ArrowStorm extends BaseSpell {
             Location location = LocationUtils.randomPointInCircle(position, radius);
             Arrow arrow = world.spawnArrow(location, direction, 4, 12);
             arrow.setFireTicks(200);
-            new DirectionalParticle(world, Particle.CLOUD, location, vel, 0);
+            DirectionalParticle.spawn(Particle.CLOUD, location, vel, 0);
             world.playSound(location, Sound.ITEM_FIRECHARGE_USE, 5, 1);
         }
     }

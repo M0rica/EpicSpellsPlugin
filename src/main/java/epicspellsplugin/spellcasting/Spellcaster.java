@@ -64,7 +64,7 @@ public class Spellcaster {
                             }
                             // show pattern to the player by drawing particles
                             for (Location loc : castingPoints) {
-                                new DirectionalParticle(player.getWorld(), Particle.ELECTRIC_SPARK, loc, new Vector(), 0);
+                                DirectionalParticle.spawn(Particle.ELECTRIC_SPARK, loc, new Vector(), 0);
                             }
                         } else {
                             spellcastPatternRecord.addCastingPoint(point);
