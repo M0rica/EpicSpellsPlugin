@@ -18,7 +18,6 @@ package epicspellsplugin.utils;
 
 import org.bukkit.Location;
 import org.bukkit.Particle;
-import org.bukkit.World;
 import org.bukkit.util.Vector;
 
 /**

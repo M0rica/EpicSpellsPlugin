@@ -17,11 +17,9 @@
 package epicspellsplugin.effects;
 
 import epicspellsplugin.utils.DirectionalParticleCollection;
-import epicspellsplugin.utils.Utils;
-import org.bukkit.*;
-import org.bukkit.block.Block;
-import org.bukkit.entity.FallingBlock;
-import org.bukkit.util.RayTraceResult;
+import org.bukkit.Location;
+import org.bukkit.Particle;
+import org.bukkit.World;
 import org.bukkit.util.Vector;
 
 import java.util.ArrayList;

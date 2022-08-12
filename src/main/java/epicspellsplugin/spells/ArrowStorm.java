@@ -2,7 +2,6 @@ package epicspellsplugin.spells;
 
 import epicspellsplugin.BaseSpell;
 import epicspellsplugin.SpellManager;
-import epicspellsplugin.effects.ExplosionMedium;
 import epicspellsplugin.utils.DirectionalParticle;
 import epicspellsplugin.utils.DirectionalParticleCollection;
 import epicspellsplugin.utils.LocationUtils;
