@@ -19,7 +19,7 @@ This plugin is still in very early development, which is why there aren't that m
 - cast any spell by running `/spell cast <spellname>` and have fun!
 
 ## Roadmap
-- v0.1-dev.3 (almost completed):
+- v0.1-dev.3 (done):
   - add spell casting system triggering spells by drawing simple shapes made of lines with a wand
   - ability to bind spells to your own custom shapes via a command and then drawing the shape
 - v0.1-dev.4:
