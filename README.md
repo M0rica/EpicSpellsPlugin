@@ -17,6 +17,9 @@ This plugin is still in very early development, which is why there aren't that m
 - install a Spigot server for 1.18 or higher
 - download the EpicSpellsPlugin.jar from the latest release and put it in your server's `plugins` folder
 - cast any spell by running `/spell cast <spellname>` and have fun!
+  - alternativley, you can also cast spells by holding a stick with the custom name "Magic Wand", sneaking and then drawing a pattern by moving your head
+  - a pattern can consist of an infinite sequence of lines and there are 8 types of lines (up, down, up-left, up-right, down-left, down-right)
+  - you can bind spells to custom patterns by running `/spell bind <spellname>` and then drawing your custom pattern
 
 ## Roadmap
 - v0.1-dev.3 (done):
