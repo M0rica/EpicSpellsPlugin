@@ -18,10 +18,7 @@ package epicspellsplugin;
 
 import epicspellsplugin.exceptions.NotEnoughManaException;
 import epicspellsplugin.exceptions.SpellCooldownException;
-import epicspellsplugin.spells.ArrowStorm;
-import epicspellsplugin.spells.Explosion;
-import epicspellsplugin.spells.Fireball;
-import epicspellsplugin.spells.PowerStrike;
+import epicspellsplugin.spells.*;
 
 import java.util.*;
 import java.util.logging.Logger;
@@ -65,6 +62,8 @@ public class SpellManager {
         wraper = new SpellWrapper("Explosion", new Explosion(), 100, 100);
         registerSpell(wraper);
         wraper = new SpellWrapper("ArrowStorm", new ArrowStorm(), 150, 100);
+        registerSpell(wraper);
+        wraper = new SpellWrapper("DeepFreeze", new DeepFreeze(), 250, 120);
         registerSpell(wraper);
     }
     
@@ -130,11 +129,11 @@ public class SpellManager {
         }
     }
 
-    public BaseSpell castSpell(String name, int parentID, Player player){
+    public BaseSpell castSpell(String name, int parentID, Player player, Location location){
         SpellWrapper spellWrapper = getSpellWrapper(name);
         if(spellWrapper != null){
             BaseSpell spell = spellWrapper.getSpell();
-            spawnSpell(spell, player, name, parentID);
+            spawnSpell(spell, player, name, parentID, location);
             return spell;
         }
         return null;
@@ -238,8 +237,8 @@ public class SpellManager {
             }
         }
     }
-    
-    public void spawnSpell(BaseSpell spell, Player player, String name, int parentID){
+
+    private int generateSpellID(){
         do{
             if(activeSpellID == Integer.MAX_VALUE){
                 activeSpellID = 1;
@@ -247,9 +246,21 @@ public class SpellManager {
                 activeSpellID++;
             }
         } while(activeSpells.containsKey(activeSpellID));
-        spell.setAlive(true);
-        spell.init(this, player.getWorld(), player, activeSpellID, parentID, name);
-        activeSpells.put(activeSpellID, spell);
+        return activeSpellID;
     }
     
+    public void spawnSpell(BaseSpell spell, Player player, String name, int parentID){
+        int id = generateSpellID();
+        spell.setAlive(true);
+        spell.init(this, player, id, parentID, name);
+        activeSpells.put(id, spell);
+    }
+
+    public void spawnSpell(BaseSpell spell, Player player, String name, int parentID, Location location){
+        int id = generateSpellID();
+        spell.setAlive(true);
+        spell.init(this, location, player, id, parentID, name);
+        activeSpells.put(id, spell);
+    }
+
 }

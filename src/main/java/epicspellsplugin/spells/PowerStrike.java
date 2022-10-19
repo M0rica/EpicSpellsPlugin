@@ -25,7 +25,6 @@ import java.util.List;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Particle;
-import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -43,8 +42,8 @@ public class PowerStrike extends BaseSpell{
     int power;
     
     @Override
-    public void init(SpellManager spellManager, World world, Player player, int id, int parentID, String name){
-        super.init(spellManager, world, player, id, parentID, name);
+    public void init(SpellManager spellManager, Player player, int id, int parentID, String name){
+        super.init(spellManager, player, id, parentID, name);
         maxDistance = 100;
         maxLifeTime = 300;
         velocity = player.getLocation().getDirection().multiply(3);
@@ -60,15 +59,15 @@ public class PowerStrike extends BaseSpell{
     public void tick() {
         super.tick();
         if(move){
-            double divide = 0.1;
+            double divide = 1;
             for(int i=0; i<(1/divide); i++){
                 position = position.add(velocity.clone().multiply(divide));
-                world.spawnParticle(Particle.DRAGON_BREATH, position, 10, 0.2, 0.2, 0.2, 0);
+                world.spawnParticle(Particle.SONIC_BOOM, position, 10, 0.2, 0.2, 0.2, 0);
             }
             explosionLocations.add(position.clone());
         }
             
-        if(lifetime > 30){
+        if(lifetime > 12){
             int explosions = 0;
             while(explosionLocations.size() > 0 && explosions < explosionsPerTick){
                 Location explosionLocation = explosionLocations.remove(0);

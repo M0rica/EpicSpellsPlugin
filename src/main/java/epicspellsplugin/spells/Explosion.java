@@ -16,8 +16,8 @@ import java.util.List;
 public class Explosion extends BaseSpell {
 
     @Override
-    public void init(SpellManager spellManager, World world, Player player, int id, int parentID, String name){
-        super.init(spellManager, world, player, id, parentID, name);
+    public void init(SpellManager spellManager, Player player, int id, int parentID, String name){
+        super.init(spellManager, player, id, parentID, name);
         startPosition = player.getTargetBlock(null, 80).getLocation();
         position = startPosition.clone();
         alive = false;

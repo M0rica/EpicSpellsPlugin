@@ -40,8 +40,8 @@ public class Fireball extends BaseSpell{
     private Material hitMaterial;
     
     @Override
-    public void init(SpellManager spellManager, World world, Player player, int id, int parentID, String name){
-        super.init(spellManager, world, player, id, parentID, name);
+    public void init(SpellManager spellManager, Location location, Player player, int id, int parentID, String name){
+        super.init(spellManager, location, player, id, parentID, name);
         collideWithFluids = true;
         maxDistance = 50;
         maxLifeTime = 300;

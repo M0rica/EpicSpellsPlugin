@@ -17,7 +17,6 @@
 package epicspellsplugin;
 
 import org.bukkit.Location;
-import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -30,17 +29,22 @@ import org.bukkit.util.Vector;
 public class BaseSpell extends Spell implements SpellInteraction{
 
     @Override
-    public void init(SpellManager spellManager, World world, Player player, int id, int pID, String name){
-        this.world = world;
+    public void init(SpellManager spellManager, Location location, Player player, int id, int pID, String name){
+        this.world = location.getWorld();
         this.spellManager = spellManager;
         this.player = player;
         this.id = id;
         parentID = pID;
         this.name = name;
         velocity = new Vector(0, 0, 0);
-        startPosition = player.getEyeLocation().add(player.getEyeLocation().getDirection().normalize());
+        startPosition = location;
         position = startPosition.clone();
         lifetime = 0;
+    }
+
+    public void init(SpellManager spellManager, Player player, int id, int pID, String name){
+        Location loc = player.getEyeLocation().add(player.getEyeLocation().getDirection().normalize());
+        init(spellManager, loc, player, id, pID, name);
     }
 
     @Override

@@ -9,7 +9,6 @@ import epicspellsplugin.utils.Utils;
 import org.bukkit.Location;
 import org.bukkit.Particle;
 import org.bukkit.Sound;
-import org.bukkit.World;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
@@ -20,14 +19,18 @@ import java.util.List;
 public class ArrowStorm extends BaseSpell {
 
     @Override
-    public void init(SpellManager spellManager, World world, Player player, int id, int parentID, String name){
-        super.init(spellManager, world, player, id, parentID, name);
-
+    public void init(SpellManager spellManager, Location location, Player player, int id, int parentID, String name){
+        super.init(spellManager, location, player, id, parentID, name);
         maxLifeTime = 120;
-
-        startPosition = player.getTargetBlock(null, 80).getLocation().add(new Vector(0, 20, 0));
-        position = startPosition.clone();
     }
+
+    @Override
+    public void init(SpellManager spellManager, Player player, int id, int parentID, String name){
+        Location loc = player.getTargetBlock(null, 80).getLocation().add(new Vector(0, 20, 0));
+        init(spellManager, loc, player, id, parentID, name);
+    }
+
+
 
     @Override
     public void tick(){
